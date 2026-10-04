@@ -1,0 +1,6 @@
+{
+  "name": "By Grace Party Rentals",
+  "description": "Family-owned party rental company in Haines City, Florida offering bounce houses, water slides, tents, tables, chairs, and concessions across Central Florida.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

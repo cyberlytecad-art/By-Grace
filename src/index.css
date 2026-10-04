@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Clean, structured image placeholder styles */
+  .image-placeholder {
+    background-color: #E9EDF2;
+    color: #64748B;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.05em;
+    user-select: none;
+    border: 1px dashed #CBD5E1;
+    transition: all 0.2s ease;
+  }
+
+  .image-placeholder:hover {
+    border-color: #94A3B8;
+  }
+
+  /* Specific replaceable hero background placeholder */
+  /* To replace with an actual photo later, simply set the background-image below: */
+  .hero-placeholder-bg {
+    background-color: #DDE3EA;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    /* Example: background-image: url('/path/to/hero.jpg'); */
+  }
+}
+
