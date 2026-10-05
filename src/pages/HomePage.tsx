@@ -175,15 +175,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Trust & Local Service Highlight Banner */}
       <section className="max-w-[1250px] mx-auto px-4 sm:px-6 mt-16 sm:mt-20">
-        <div className="party-banner border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="sunny-band shadow-2xl shadow-[#F97316]/30 rounded-[28px] p-7 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center md:text-left">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
+            <p className="text-xs font-bold uppercase tracking-wider text-white/90">
               Local & Family-Owned in Haines City, FL
             </p>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#071326]">
+            <h2 className="text-2xl sm:text-3xl font-black text-white drop-shadow-sm">
               Planning a Birthday, School Event, or Church Gathering?
             </h2>
-            <p className="text-sm text-[#64748B]">
+            <p className="text-sm sm:text-base text-white/95">
               We deliver, set up and clean every bounce house, water slide, tent and table so your event runs smoothly.
             </p>
           </div>
@@ -193,13 +193,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 onNavigate('rentals');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="bg-[#087BF5] hover:bg-[#076edc] text-white px-5 py-2.5 rounded-[8px] font-semibold text-sm transition-colors"
+              className="bg-white hover:bg-[#FFF7ED] text-[#C2410C] px-6 py-3 rounded-full font-bold text-sm shadow-lg transition-colors"
             >
               Browse Catalog
             </button>
             <a
               href="tel:8632804175"
-              className="border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] bg-white px-4 py-2.5 rounded-[8px] font-semibold text-sm transition-colors"
+              className="border-2 border-white/90 hover:bg-white/15 text-white px-5 py-[10px] rounded-full font-bold text-sm transition-colors"
             >
               863-280-4175
             </a>

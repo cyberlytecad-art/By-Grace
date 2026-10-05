@@ -2,6 +2,7 @@ import React from 'react';
 import { ArrowRight, Candy, IceCreamCone, Music, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
 import { SlotImage } from '../components/SlotImage';
+import { PageBand } from '../components/PageBand';
 import { RENTAL_IMAGES, SiteImage } from '../data/siteImages';
 import { RENTAL_INVENTORY } from '../data/rentalInventory';
 
@@ -29,6 +30,17 @@ const TILE_SPANS: Record<string, string> = {
   'water-slides': 'col-span-2 row-span-2',
   'bounce-houses': 'lg:col-span-2',
   'decor-more': 'lg:col-span-2',
+};
+
+/** Each category gets its own party color for its section header and cards. */
+const SECTION_ACCENTS: Record<string, string> = {
+  'water-slides': '#0EA5E9',
+  'bounce-houses': '#EC4899',
+  combos: '#8B5CF6',
+  tents: '#F97316',
+  'tables-chairs': '#10B981',
+  concessions: '#EF4444',
+  'decor-more': '#F59E0B',
 };
 
 const scrollToSection = (id: string) => {
@@ -84,25 +96,14 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="w-full pb-20">
-      <div className="max-w-[1250px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
-        {/* Header Block: Left Aligned */}
-        <div className="text-left mb-10 md:mb-12">
-          {/* Small uppercase blue eyebrow */}
-          <p className="text-xs md:text-sm font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-2">
-            RENTALS
-          </p>
+      <PageBand eyebrow="RENTALS" title={<>Our <span className="sun-text">Rentals</span></>}>
+        <p>
+          Bounce houses, water slides, tents, tables, chairs, concessions and more. Everything you need
+          for an unforgettable event in Haines City and all of Central Florida.
+        </p>
+      </PageBand>
 
-          {/* Large heading: “Our” dark navy/black, “Rentals” bright blue */}
-          <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
-            Our <span className="party-text">Rentals</span>
-          </h1>
-
-          {/* Under it: Muted gray, max width ~800px */}
-          <p className="text-base sm:text-[17px] text-[#64748B] max-w-[800px] leading-relaxed">
-            Bounce houses, water slides, tents, tables, chairs, concessions and more. Everything you need
-            for an unforgettable event in Haines City and all of Central Florida.
-          </p>
-        </div>
+      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 -mt-8 sm:-mt-10">
 
         {/* RENTAL GRID: a photo mosaic. Each tile scrolls down to that category's items below. */}
         <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[170px] sm:auto-rows-[210px] lg:auto-rows-[230px] gap-3 sm:gap-4">
@@ -144,11 +145,16 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Every item, grouped by category. The cards above scroll down to these. */}
-        {RENTAL_INVENTORY.map((section) => (
+        {RENTAL_INVENTORY.map((section) => {
+          const accent = SECTION_ACCENTS[section.id] ?? '#087BF5';
+          return (
           <section key={section.id} id={`rentals-${section.id}`} className="scroll-mt-28 mt-16 sm:mt-20">
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6 sm:mb-8">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-1.5">
+                <p
+                  className="inline-block px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-[0.16em] text-white mb-2.5 shadow-md"
+                  style={{ backgroundColor: accent }}
+                >
                   {section.items.length} {section.items.length === 1 ? 'option' : 'options'}
                 </p>
                 <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-[#071326]">{section.name}</h2>
@@ -156,7 +162,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
               </div>
               <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                className="self-start sm:self-auto text-sm font-semibold text-[#087BF5] hover:text-[#076edc] whitespace-nowrap"
+                className="self-start sm:self-auto px-4 py-2 rounded-full bg-white/80 backdrop-blur border border-white shadow-sm text-sm font-semibold text-[#071326] hover:bg-white whitespace-nowrap"
               >
                 Back to all rentals ↑
               </button>
@@ -168,7 +174,8 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 return (
                   <div
                     key={item.id}
-                    className="flex flex-col bg-white rounded-[12px] border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 overflow-hidden transition-all duration-200 hover:border-[#087BF5] hover:shadow-xl hover:translate-y-[-2px]"
+                    className="flex flex-col bg-white rounded-[16px] border-t-[6px] shadow-xl shadow-[#071326]/15 overflow-hidden transition-all duration-200 hover:shadow-2xl hover:translate-y-[-3px]"
+                    style={{ borderTopColor: accent }}
                   >
                     {item.image ? (
                       <div className="relative w-full aspect-[4/3] bg-[#E9EDF2] image-placeholder">
@@ -188,7 +195,8 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                           onNavigate('estimator', { preselectedCategory: section.id, preselectedItemId: item.id });
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="mt-4 self-start px-4 py-2 bg-[#087BF5] hover:bg-[#076edc] text-white font-semibold text-sm rounded-[8px] flex items-center gap-2 transition-colors"
+                        className="mt-4 self-start px-5 py-2.5 text-white font-bold text-sm rounded-full flex items-center gap-2 shadow-md transition-all hover:brightness-110 hover:translate-y-[-1px]"
+                        style={{ backgroundColor: accent }}
                       >
                         <span>Get a Quote</span>
                         <ArrowRight className="w-4 h-4" />
@@ -199,7 +207,8 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
               })}
             </div>
           </section>
-        ))}
+          );
+        })}
 
         {/* Quick Quote Banner at the bottom of Rentals page */}
         <div className="mt-16 sm:mt-20 border-t border-[#E8ECF1] pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">

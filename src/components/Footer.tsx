@@ -15,41 +15,41 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-white mt-16 md:mt-24">
+    <footer className="night-band mt-16 md:mt-24 text-white">
       <div className="party-stripe h-1.5 w-full" aria-hidden="true" />
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Col 1: Brand & Logo */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="relative image-placeholder w-12 h-12 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[9px] font-bold text-[#64748B]">
+              <div className="relative image-placeholder w-12 h-12 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[9px] font-bold text-white/70">
                 <span>[ BY GRACE LOGO ]</span>
                 <SlotImage image={LOGO} />
               </div>
               <div>
-                <span className="block text-lg font-black text-[#071326] tracking-tight">
+                <span className="block text-lg font-black text-white tracking-tight">
                   BY GRACE PARTY RENTALS
                 </span>
-                <span className="block text-xs font-semibold text-[#087BF5] uppercase tracking-wider">
+                <span className="block text-xs font-semibold text-[#7DD3FC] uppercase tracking-wider">
                   Haines City, FL & Central Florida
                 </span>
               </div>
             </div>
-            <p className="text-sm text-[#64748B] max-w-sm leading-relaxed">
+            <p className="text-sm text-white/70 max-w-sm leading-relaxed">
               Family-owned party rental company providing clean, high-quality bounce houses, water slides, tents, tables, chairs, and concessions for any special event.
             </p>
           </div>
 
           {/* Col 2: Quick Links */}
           <div className="md:col-span-3">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#087BF5] mb-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#FDE047] mb-4">
               Navigation
             </h4>
-            <ul className="space-y-2.5 text-sm font-medium text-[#071326]">
+            <ul className="space-y-2.5 text-sm font-medium text-white">
               <li>
                 <button
                   onClick={() => handleNavClick('home')}
-                  className="hover:text-[#087BF5] transition-colors"
+                  className="hover:text-[#FDE047] transition-colors"
                 >
                   Home
                 </button>
@@ -57,7 +57,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => handleNavClick('rentals')}
-                  className="hover:text-[#087BF5] transition-colors"
+                  className="hover:text-[#FDE047] transition-colors"
                 >
                   Our Rentals
                 </button>
@@ -65,7 +65,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => handleNavClick('packages')}
-                  className="hover:text-[#087BF5] transition-colors"
+                  className="hover:text-[#FDE047] transition-colors"
                 >
                   Party Packages
                 </button>
@@ -73,7 +73,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => handleNavClick('estimator')}
-                  className="hover:text-[#087BF5] transition-colors"
+                  className="hover:text-[#FDE047] transition-colors"
                 >
                   Book & Price Estimate
                 </button>
@@ -81,7 +81,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
               <li>
                 <button
                   onClick={() => handleNavClick('about-contact')}
-                  className="hover:text-[#087BF5] transition-colors"
+                  className="hover:text-[#FDE047] transition-colors"
                 >
                   About & Contact
                 </button>
@@ -91,20 +91,20 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
 
           {/* Col 3: Direct Contact */}
           <div className="md:col-span-4">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#087BF5] mb-4">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#FDE047] mb-4">
               Contact Us
             </h4>
-            <div className="space-y-3 text-sm text-[#071326]">
+            <div className="space-y-3 text-sm text-white">
               <div className="flex items-center gap-2.5">
                 <div className="w-7 h-7 rounded-full bg-blue-50 text-[#087BF5] flex items-center justify-center shrink-0">
                   <Phone className="w-3.5 h-3.5" />
                 </div>
                 <div className="font-semibold text-xs sm:text-sm">
-                  <a href="tel:8632804175" className="hover:text-[#087BF5] transition-colors">
+                  <a href="tel:8632804175" className="hover:text-[#FDE047] transition-colors">
                     863-280-4175
                   </a>
-                  <span className="text-[#94A3B8] mx-1.5">•</span>
-                  <a href="tel:3215229690" className="hover:text-[#087BF5] transition-colors">
+                  <span className="text-white/40 mx-1.5">•</span>
+                  <a href="tel:3215229690" className="hover:text-[#FDE047] transition-colors">
                     321-522-9690
                   </a>
                 </div>
@@ -114,7 +114,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="w-7 h-7 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center shrink-0">
                   <MapPin className="w-3.5 h-3.5" />
                 </div>
-                <div className="text-xs sm:text-sm text-[#475569]">
+                <div className="text-xs sm:text-sm text-white/80">
                   Haines City, FL &bull; Serving Central Florida
                 </div>
               </div>
@@ -123,7 +123,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                 <div className="w-7 h-7 rounded-full bg-purple-50 text-purple-600 flex items-center justify-center shrink-0">
                   <Clock className="w-3.5 h-3.5" />
                 </div>
-                <div className="text-xs sm:text-sm text-[#475569]">
+                <div className="text-xs sm:text-sm text-white/80">
                   Hours: XXX
                 </div>
               </div>
@@ -131,9 +131,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-[#E8ECF1] flex flex-col sm:flex-row items-center justify-between text-xs text-[#64748B] gap-4">
+        <div className="mt-12 pt-6 border-t border-white/15 flex flex-col sm:flex-row items-center justify-between text-xs text-white/70 gap-4">
           <p>© {new Date().getFullYear()} By Grace Party Rentals. All rights reserved.</p>
-          <p>Haines City &bull; Lakeland &bull; Davenport &bull; Kissimmee &bull; Orlando & Central Florida</p>
+          <p>Haines City &bull; Davenport &bull; Kissimmee &bull; Orlando & Central Florida</p>
         </div>
       </div>
     </footer>

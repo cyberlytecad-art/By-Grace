@@ -2,10 +2,11 @@ import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 import { PageId } from '../types';
 import { SlotImage } from '../components/SlotImage';
+import { PageBand } from '../components/PageBand';
 import { PACKAGE_IMAGES } from '../data/siteImages';
 
 interface PackagesPageProps {
-  onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
+  onNavigate: (page: PageId, extraData?: { preselectedCategory?: string; preselectedItemId?: string }) => void;
 }
 
 export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
@@ -43,25 +44,14 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="w-full pb-20">
-      <div className="max-w-[1250px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
-        {/* Header Block: Left Aligned, matching Rentals page */}
-        <div className="text-left mb-10 md:mb-12">
-          {/* Small uppercase blue eyebrow */}
-          <p className="text-xs md:text-sm font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-2">
-            PACKAGES
-          </p>
+      <PageBand eyebrow="PACKAGES" title={<>Party <span className="sun-text">Packages</span></>}>
+        <p>
+          Pick a bounce house, water slide or combo and get chairs, tables and a tent with it.
+          We deliver and set everything up in Haines City and across Central Florida.
+        </p>
+      </PageBand>
 
-          {/* Large heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
-            Party <span className="party-text">Packages</span>
-          </h1>
-
-          {/* Supporting paragraph */}
-          <p className="text-base sm:text-[17px] text-[#64748B] max-w-[800px] leading-relaxed">
-            Pick a bounce house, water slide or combo and get chairs, tables and a tent with it.
-            We deliver and set everything up in Haines City and across Central Florida.
-          </p>
-        </div>
+      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 -mt-8 sm:-mt-10">
 
         {/* 
           PACKAGES GRID
@@ -69,11 +59,13 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
           Subtle borders, clean typography, image placeholders.
         */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-          {packages.map((pkg) => {
+          {packages.map((pkg, i) => {
+            const accent = ['#EC4899', '#0EA5E9', '#8B5CF6'][i % 3];
             return (
               <div
                 key={pkg.id}
-                className="bg-white border border-[#D3DDE9] hover:border-[#087BF5] shadow-lg shadow-[#071326]/10 hover:shadow-xl rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
+                className="bg-white border-t-[6px] shadow-xl shadow-[#071326]/15 hover:shadow-2xl rounded-[20px] p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-3px] group"
+                style={{ borderTopColor: accent }}
               >
                 <div>
                   {/* Eyebrow & Package Code */}
@@ -119,7 +111,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
                   {/* Price / Details Placeholder */}
                   <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg p-3 text-center mb-6">
-                    <p className="text-2xl font-black text-[#087BF5] leading-none">{pkg.price}</p>
+                    <p className="text-3xl font-black leading-none" style={{ color: accent }}>{pkg.price}</p>
                     <p className="text-[11px] font-semibold text-[#64748B] mt-1">Easter special price</p>
                   </div>
                 </div>
@@ -127,12 +119,13 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                 {/* Action Button */}
                 <button
                   onClick={() => {
-                    onNavigate('estimator', { preselectedCategory: pkg.name });
+                    onNavigate('estimator', { preselectedCategory: 'packages', preselectedItemId: pkg.id.replace('pkg-', 'pkg-bundle-') });
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="w-full py-3 bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white font-bold text-sm rounded-[8px] flex items-center justify-center gap-2 transition-colors"
+                  className="w-full py-3 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-md transition-all hover:brightness-110"
+                  style={{ backgroundColor: accent }}
                 >
-                  <span>Book & Price This Package</span>
+                  <span>Choose This Package</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.2]" />
                 </button>
               </div>
@@ -141,21 +134,21 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Custom Bundling note */}
-        <div className="mt-14 party-banner border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
-          <h4 className="text-lg font-bold text-[#071326]">
-            Need a custom package for your specific event size?
+        <div className="mt-14 sunny-band shadow-2xl shadow-[#F97316]/30 rounded-[28px] p-7 sm:p-10 text-center max-w-2xl mx-auto">
+          <h4 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">
+            Need something different for your event?
           </h4>
-          <p className="text-sm text-[#64748B] mt-1.5 mb-5">
-            We customize packages with extra tables, chairs, generators, and multiple inflatables. Build and price your custom package in real time!
+          <p className="text-sm sm:text-base text-white/95 mt-1.5 mb-6">
+            Mix and match bounce houses, slides, tents, tables and chairs. Build your quote and we'll confirm the price with you.
           </p>
           <button
             onClick={() => {
               onNavigate('estimator');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="px-6 py-2.5 bg-[#087BF5] hover:bg-[#076edc] text-white text-sm font-semibold rounded-[8px] transition-colors"
+            className="px-7 py-3 bg-white hover:bg-[#FFF7ED] text-[#C2410C] text-sm font-bold rounded-full shadow-lg transition-colors"
           >
-            Customize Your Package & Estimate →
+            Build Your Own Quote →
           </button>
         </div>
       </div>

@@ -81,9 +81,8 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
       );
       if (found) return [{ item: found, quantity: 1 }];
     }
-    // Default starter item: popular water slide so the user immediately sees a working estimate
-    const defaultItem = BOOKABLE_ITEMS.find(i => i.id === 'blue-palm-18ft-slide');
-    return defaultItem ? [{ item: defaultItem, quantity: 1 }] : [];
+    // Start empty so the deal picker or the item list is the customer's first choice.
+    return [];
   });
 
   // Booking details form state
@@ -110,6 +109,16 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   const rightPaneRef = useRef<HTMLDivElement>(null);
 
   // Cart modifications
+  // The bundles from the Packages page. Picking one swaps out any other deal already chosen.
+  const deals = useMemo(() => BOOKABLE_ITEMS.filter((i) => i.category === 'packages'), []);
+  const chosenDealId = cart.find((c) => c.item.category === 'packages')?.item.id;
+  const handleChooseDeal = (deal: BookableItem) => {
+    setCart((prev) => {
+      const withoutDeals = prev.filter((c) => c.item.category !== 'packages');
+      return chosenDealId === deal.id ? withoutDeals : [...withoutDeals, { item: deal, quantity: 1 }];
+    });
+  };
+
   const handleAddItem = (item: BookableItem) => {
     setCart((prev) => {
       const existing = prev.find((c) => c.item.id === item.id);
@@ -377,26 +386,22 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   return (
     <div className="w-full lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
       {/* Top Header Bar */}
-      <div className="border-b border-[#E8ECF1] bg-white shrink-0 py-3 sm:py-4 px-4 sm:px-6">
+      <div className="party-band shrink-0 py-4 sm:py-5 px-4 sm:px-6 shadow-lg shadow-[#6D28D9]/20">
         <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#087BF5]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#FDE047]">
                 ONLINE BOOKING & ESTIMATE
               </p>
-              <span className="hidden sm:inline text-[#CBD5E1]">&bull;</span>
-              <span className="hidden sm:inline text-xs text-[#64748B]">
-                Independent Scroll Panes
-              </span>
             </div>
-            <h1 className="text-xl sm:text-2xl lg:text-[25px] font-black tracking-tight leading-tight text-[#071326]">
-              Book & Price Estimate <span className="party-text">All at Once</span>
+            <h1 className="text-xl sm:text-2xl lg:text-[27px] font-black tracking-tight leading-tight text-white drop-shadow-sm">
+              Book & Price Estimate <span className="sun-text">All at Once</span>
             </h1>
           </div>
-          <div className="hidden md:flex items-center gap-3 text-xs text-[#64748B]">
+          <div className="hidden md:flex items-center gap-3 text-xs text-white/85">
             <span>Haines City & Central FL Delivery</span>
-            <span className="text-[#CBD5E1]">&bull;</span>
-            <a href="tel:8632804175" className="font-bold text-[#087BF5] hover:underline">
+            <span className="text-white/50">&bull;</span>
+            <a href="tel:8632804175" className="font-bold text-white px-3 py-1.5 rounded-full bg-white/15 border border-white/40 hover:bg-white/25">
               863-280-4175
             </a>
           </div>
@@ -418,6 +423,52 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
             ref={leftPaneRef}
             className="lg:col-span-7 lg:h-full lg:overflow-y-auto lg:pr-4 independent-scroll space-y-8 pb-16 lg:pb-12"
           >
+
+            {/* QUICK PICK: one tap on a deal puts it in the quote */}
+            <div className="sunny-band rounded-[24px] p-5 sm:p-7 shadow-xl shadow-[#F97316]/25">
+              <div className="mb-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/90">Quick pick</span>
+                <h2 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">Choose a Deal</h2>
+                <p className="text-sm text-white/90 mt-0.5">Tap one to add it to your quote, or build your own below.</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                {deals.map((deal) => {
+                  const chosen = chosenDealId === deal.id;
+                  return (
+                    <button
+                      key={deal.id}
+                      type="button"
+                      onClick={() => handleChooseDeal(deal)}
+                      aria-pressed={chosen}
+                      className={`relative text-left bg-white rounded-2xl overflow-hidden flex sm:flex-col transition-all shadow-lg hover:-translate-y-0.5 ${
+                        chosen ? 'ring-4 ring-[#087BF5] ring-offset-2 ring-offset-[#F97316]' : 'hover:shadow-xl'
+                      }`}
+                    >
+                      <div className="relative w-28 sm:w-full shrink-0 aspect-[4/3] bg-[#E9EDF2]">
+                        <SlotImage image={deal.image ?? imageForItem(deal.id)} />
+                      </div>
+                      <div className="p-3 sm:p-4 flex-1 flex flex-col">
+                        <span className="font-extrabold text-sm sm:text-base text-[#071326] leading-tight">{deal.name}</span>
+                        <span className="text-[11px] sm:text-xs text-[#64748B] mt-1 leading-snug">
+                          {deal.description.replace(/\s*\(Easter special price\)/, '')}
+                        </span>
+                        <div className="mt-2 flex items-center justify-between gap-2">
+                          <span className="text-xl font-black text-[#EC4899]">{money(deal.price)}</span>
+                          <span
+                            className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${
+                              chosen ? 'bg-[#087BF5] text-white' : 'bg-[#FFF7ED] text-[#C2410C]'
+                            }`}
+                          >
+                            {chosen ? '✓ Chosen' : 'Choose'}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-[11px] text-white/85 mt-3">Deal prices are from our Easter specials.</p>
+            </div>
 
             {/* STEP 1: CHOOSE RENTAL ITEMS */}
             <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
