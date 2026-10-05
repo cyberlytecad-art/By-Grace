@@ -27,7 +27,8 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-[#E8ECF1]">
+    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-[#E8ECF1]">
+      <div className="party-stripe h-1 w-full" aria-hidden="true" />
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 h-[74px] md:h-[82px] flex items-center justify-between">
         {/* Left: Circular By Grace Party Rentals Logo Placeholder */}
         <div 

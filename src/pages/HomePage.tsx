@@ -58,7 +58,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full">
       {/* 
         HERO SECTION
         Height: approx 650-760px on 1440px desktop
@@ -183,7 +183,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Trust & Local Service Highlight Banner */}
       <section className="max-w-[1250px] mx-auto px-4 sm:px-6 mt-16 sm:mt-20">
-        <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="party-banner border border-white shadow-sm rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center md:text-left">
             <p className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
               Local & Family-Owned in Haines City, FL

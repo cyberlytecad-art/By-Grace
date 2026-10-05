@@ -65,7 +65,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="w-full bg-white pb-20">
+    <div className="w-full pb-20">
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
         {/* Header Block: Left Aligned */}
         <div className="text-left mb-10 md:mb-12">
@@ -76,7 +76,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
 
           {/* Large heading: “Our” dark navy/black, “Rentals” bright blue */}
           <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
-            Our <span className="text-[#087BF5]">Rentals</span>
+            Our <span className="party-text">Rentals</span>
           </h1>
 
           {/* Under it: Muted gray, max width ~800px */}
@@ -101,14 +101,21 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
             return (
               <div
                 key={category.id}
-                onClick={() => setSelectedRental(category)}
+                onClick={() => {
+                  if (category.id === 'combos') {
+                    onNavigate('packages');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  } else {
+                    setSelectedRental(category);
+                  }
+                }}
                 className="group cursor-pointer select-none"
               >
                 {/* 
                   Large rectangular image placeholder
                   Aspect ratio 16:9 / 1.65:1 with subtle 8-10px radius
                 */}
-                <div className="relative w-full aspect-[16/9.8] rounded-[10px] overflow-hidden image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-4 transition-all duration-200 group-hover:border-[#087BF5] group-hover:translate-y-[-2px]">
+                <div className="relative w-full aspect-[16/9.8] rounded-[10px] overflow-hidden shadow-md image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-4 transition-all duration-200 group-hover:border-[#087BF5] group-hover:translate-y-[-2px]">
                   <span className="text-xs sm:text-[13px] font-bold tracking-wider text-[#64748B] uppercase">
                     [ {category.placeholderLabel} ]
                   </span>

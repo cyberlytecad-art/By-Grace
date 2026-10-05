@@ -37,7 +37,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#071326] flex flex-col font-['Inter',sans-serif]">
+    <div className="min-h-screen party-bg text-[#071326] flex flex-col font-['Inter',sans-serif]">
       {/* Universal Header */}
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
 

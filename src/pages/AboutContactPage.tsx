@@ -67,7 +67,7 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
   };
 
   return (
-    <div className="w-full bg-white pb-20">
+    <div className="w-full pb-20">
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
         {/* 
           2-Column Layout
@@ -167,7 +167,7 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
               </p>
               <h2 className="text-3xl sm:text-[40px] font-black tracking-tight leading-tight mb-3">
                 <span className="text-[#071326]">Get in </span>
-                <span className="text-[#087BF5]">Touch</span>
+                <span className="party-text">Touch</span>
               </h2>
               <p className="text-sm text-[#64748B] leading-relaxed mb-6">
                 Have questions or ready to book? Give us a call, send us a

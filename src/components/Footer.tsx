@@ -15,7 +15,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-white border-t border-[#E8ECF1] mt-16 md:mt-24">
+    <footer className="bg-white mt-16 md:mt-24">
+      <div className="party-stripe h-1.5 w-full" aria-hidden="true" />
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Col 1: Brand & Logo */}

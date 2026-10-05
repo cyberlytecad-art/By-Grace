@@ -1,6 +1,37 @@
 @import "tailwindcss";
 
 @layer utilities {
+  /* Bright party backdrop behind every page: soft color glows + confetti dots */
+  .party-bg {
+    background-color: #F4F9FF;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(8, 123, 245, 0.10) 1.5px, transparent 0),
+      radial-gradient(60rem 40rem at 0% 0%, rgba(56, 189, 248, 0.32), transparent 60%),
+      radial-gradient(50rem 35rem at 100% 15%, rgba(251, 191, 36, 0.30), transparent 60%),
+      radial-gradient(55rem 40rem at 85% 85%, rgba(244, 114, 182, 0.26), transparent 60%),
+      radial-gradient(50rem 35rem at 5% 90%, rgba(52, 211, 153, 0.24), transparent 60%);
+    background-size: 28px 28px, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    background-attachment: scroll, fixed, fixed, fixed, fixed;
+  }
+
+  /* Thin rainbow stripe used on the header and footer edges */
+  .party-stripe {
+    background: linear-gradient(90deg, #087BF5, #22C55E, #FACC15, #F97316, #EC4899, #8B5CF6);
+  }
+
+  /* Gradient color for highlighted heading words */
+  .party-text {
+    background: linear-gradient(90deg, #087BF5 0%, #8B5CF6 50%, #EC4899 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Colorful call-to-action banner */
+  .party-banner {
+    background: linear-gradient(120deg, #E0F2FE 0%, #FEF3C7 50%, #FCE7F3 100%);
+  }
+
   /* Clean, structured image placeholder styles */
   .image-placeholder {
     background-color: #E9EDF2;

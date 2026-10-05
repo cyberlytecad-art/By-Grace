@@ -202,7 +202,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   // If in confirmation view
   if (confirmation) {
     return (
-      <div className="w-full bg-white pb-24">
+      <div className="w-full pb-24">
         <div className="max-w-[850px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
           <div className="border border-[#CBD5E1] rounded-2xl p-6 sm:p-10 shadow-sm bg-white">
             {/* Top Success Badge */}
@@ -357,7 +357,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   }
 
   return (
-    <div className="w-full bg-white lg:h-[calc(100vh-82px)] lg:overflow-hidden flex flex-col">
+    <div className="w-full bg-white lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
       {/* Top Header Bar */}
       <div className="border-b border-[#E8ECF1] bg-white shrink-0 py-3 sm:py-4 px-4 sm:px-6">
         <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -372,7 +372,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
               </span>
             </div>
             <h1 className="text-xl sm:text-2xl lg:text-[25px] font-black tracking-tight leading-tight text-[#071326]">
-              Book & Price Estimate <span className="text-[#087BF5]">All at Once</span>
+              Book & Price Estimate <span className="party-text">All at Once</span>
             </h1>
           </div>
           <div className="hidden md:flex items-center gap-3 text-xs text-[#64748B]">

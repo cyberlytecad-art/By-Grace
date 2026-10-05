@@ -55,7 +55,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="w-full bg-white pb-20">
+    <div className="w-full pb-20">
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
         {/* Header Block: Left Aligned, matching Rentals page */}
         <div className="text-left mb-10 md:mb-12">
@@ -66,7 +66,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
           {/* Large heading */}
           <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
-            Party <span className="text-[#087BF5]">Packages</span>
+            Party <span className="party-text">Packages</span>
           </h1>
 
           {/* Supporting paragraph */}
@@ -86,7 +86,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
             return (
               <div
                 key={pkg.id}
-                className="bg-white border border-[#E8ECF1] hover:border-[#CBD5E1] rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
+                className="bg-white border border-[#E8ECF1] hover:border-[#CBD5E1] shadow-md hover:shadow-lg rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
               >
                 <div>
                   {/* Eyebrow & Package Code */}
@@ -155,7 +155,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Custom Bundling note */}
-        <div className="mt-14 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
+        <div className="mt-14 party-banner border border-white shadow-sm rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
           <h4 className="text-lg font-bold text-[#071326]">
             Need a custom package for your specific event size?
           </h4>
