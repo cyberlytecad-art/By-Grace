@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Candy, Dices, IceCreamCone, Music, Sparkles } from 'lucide-react';
+import { ArrowRight, Candy, IceCreamCone, Music, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
 import { SlotImage } from '../components/SlotImage';
 import { RENTAL_IMAGES, SiteImage } from '../data/siteImages';
@@ -22,7 +22,6 @@ const PLACEHOLDER_ICONS: Record<string, React.ElementType> = {
   'cotton-candy': Candy,
   'snow-cone': IceCreamCone,
   'dj-service': Music,
-  'giant-games': Dices,
 };
 
 /** Mosaic layout: water slides is the big feature tile, the rest fill around it. */
@@ -78,7 +77,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
       id: 'decor-more',
       name: 'Decor & More',
       placeholderLabel: 'REPLACE WITH DECOR IMAGE',
-      shortDesc: 'Balloon decor, DJ service and giant games to finish off the party.',
+      shortDesc: 'Balloon decor and DJ service to finish off the party.',
       image: { src: `${import.meta.env.BASE_URL}images/items/balloon-decor.jpg`, alt: 'Balloon decor' },
     },
   ];

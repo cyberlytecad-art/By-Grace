@@ -50,7 +50,6 @@ const PRICES: Record<string, { price: number; unit: string }> = {
   'snow-cone': { price: 65, unit: 'machine' },
   'balloon-decor': { price: 0, unit: 'quote' },
   'dj-service': { price: 0, unit: 'quote' },
-  'giant-games': { price: 0, unit: 'quote' },
 };
 
 /** Every item on the Rentals page, in the same order, plus the packages. */

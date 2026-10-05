@@ -196,11 +196,6 @@ export const RENTAL_INVENTORY: InventorySection[] = [
         name: 'DJ Service',
         description: 'Music and a DJ to keep the party going. Ask us about adding one to your booking.',
       },
-      {
-        id: 'giant-games',
-        name: 'Giant Games',
-        description: 'Oversized yard games for all ages. Ask which games are available for your date.',
-      },
     ],
   },
 ];
