@@ -1,6 +1,17 @@
 import React, { useState } from 'react';
-import { ArrowRight, Check, X } from 'lucide-react';
+import { ArrowRight, Check, X, Waves, Castle, Sparkles, Tent, Armchair, Popcorn } from 'lucide-react';
 import { PageId } from '../types';
+import { SmartImage } from '../components/SmartImage';
+import { RENTAL_IMAGES } from '../data/siteImages';
+
+const CATEGORY_STYLE = {
+  'water-slides': { tone: 'blue', icon: Waves },
+  'bounce-houses': { tone: 'berry', icon: Castle },
+  combos: { tone: 'sunset', icon: Sparkles },
+  tents: { tone: 'lagoon', icon: Tent },
+  'tables-chairs': { tone: 'lime', icon: Armchair },
+  concessions: { tone: 'sunset', icon: Popcorn },
+} as const;
 
 interface RentalsPageProps {
   onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
@@ -73,7 +84,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
           </p>
 
           {/* Large heading: “Our” dark navy/black, “Rentals” bright blue */}
-          <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
+          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight text-[#071326] mb-4">
             Our <span className="text-[#087BF5]">Rentals</span>
           </h1>
 
@@ -102,22 +113,26 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 onClick={() => setSelectedRental(category)}
                 className="group cursor-pointer select-none"
               >
-                {/* 
-                  Large rectangular image placeholder
-                  Aspect ratio 16:9 / 1.65:1 with subtle 8-10px radius
-                */}
-                <div className="relative w-full aspect-[16/9.8] rounded-[10px] overflow-hidden image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-4 transition-all duration-200 group-hover:border-[#087BF5] group-hover:translate-y-[-2px]">
-                  <span className="text-xs sm:text-[13px] font-bold tracking-wider text-[#64748B] uppercase">
-                    [ {category.placeholderLabel} ]
-                  </span>
+                <div className="relative rounded-2xl overflow-hidden ring-1 ring-[#E8ECF1] shadow-sm transition-all duration-300 group-hover:shadow-xl group-hover:shadow-[#087BF5]/15 group-hover:translate-y-[-4px]">
+                  <SmartImage
+                    image={RENTAL_IMAGES[category.id]}
+                    tone={CATEGORY_STYLE[category.id as keyof typeof CATEGORY_STYLE].tone}
+                    icon={CATEGORY_STYLE[category.id as keyof typeof CATEGORY_STYLE].icon}
+                    className="w-full aspect-[16/10]"
+                    imgClassName="transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#071326]/30 to-transparent pointer-events-none" />
                 </div>
 
                 {/* Below image: category name on left, small thin blue arrow on far right */}
                 <div className="mt-3.5 flex items-center justify-between px-1">
-                  <h3 className="font-bold text-lg sm:text-xl text-[#071326] group-hover:text-[#087BF5] transition-colors">
-                    {category.name}
-                  </h3>
-                  <div className="text-[#087BF5] transform group-hover:translate-x-1 transition-transform">
+                  <div>
+                    <h3 className="font-display font-semibold text-xl sm:text-2xl text-[#071326] group-hover:text-[#087BF5] transition-colors">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-[#64748B] mt-0.5 line-clamp-1">{category.shortDesc}</p>
+                  </div>
+                  <div className="w-10 h-10 shrink-0 ml-3 rounded-full bg-blue-50 text-[#087BF5] flex items-center justify-center transform group-hover:translate-x-1 group-hover:bg-[#087BF5] group-hover:text-white transition-all">
                     <ArrowRight className="w-5 h-5 stroke-[2]" />
                   </div>
                 </div>
@@ -142,7 +157,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 onNavigate('packages');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="px-5 py-2.5 bg-white border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] font-semibold text-sm rounded-[8px] transition-colors"
+              className="px-5 py-2.5 bg-white border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] font-semibold text-sm rounded-full transition-colors"
             >
               View Packages
             </button>
@@ -151,7 +166,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 onNavigate('estimator');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="px-5 py-2.5 bg-[#087BF5] hover:bg-[#076edc] text-white font-semibold text-sm rounded-[8px] transition-colors"
+              className="px-5 py-2.5 bg-gradient-to-r from-[#087BF5] to-[#20BEEF] hover:from-[#076edc] hover:to-[#14ADE0] text-white font-semibold text-sm rounded-full shadow-md shadow-[#087BF5]/25 transition-all"
             >
               Estimate Price & Book →
             </button>
@@ -166,12 +181,20 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
           onClick={() => setSelectedRental(null)}
         >
           <div 
-            className="bg-white rounded-xl border border-[#E8ECF1] max-w-lg w-full p-6 shadow-xl relative animate-in fade-in zoom-in-95 duration-150"
+            className="bg-white rounded-2xl max-w-lg w-full overflow-hidden shadow-2xl relative animate-in fade-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
+            <SmartImage
+              image={RENTAL_IMAGES[selectedRental.id]}
+              tone={CATEGORY_STYLE[selectedRental.id as keyof typeof CATEGORY_STYLE].tone}
+              icon={CATEGORY_STYLE[selectedRental.id as keyof typeof CATEGORY_STYLE].icon}
+              className="w-full aspect-[16/8]"
+            />
+            <div className="p-6">
             <button
               onClick={() => setSelectedRental(null)}
-              className="absolute top-4 right-4 p-1.5 text-[#64748B] hover:text-[#071326] hover:bg-slate-100 rounded-lg transition-colors"
+              className="absolute top-3 right-3 z-10 p-1.5 bg-white/90 text-[#071326] hover:bg-white rounded-full shadow transition-colors"
+              aria-label="Close"
             >
               <X className="w-5 h-5" />
             </button>
@@ -179,7 +202,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
             <p className="text-xs font-bold uppercase tracking-wider text-[#087BF5] mb-1">
               RENTAL CATEGORY
             </p>
-            <h3 className="text-2xl font-black text-[#071326] mb-2">
+            <h3 className="font-display text-3xl font-bold text-[#071326] mb-2">
               {selectedRental.name}
             </h3>
             <p className="text-sm text-[#64748B] mb-5">
@@ -219,6 +242,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 <span>Estimate & Book {selectedRental.name}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
+            </div>
             </div>
           </div>
         </div>

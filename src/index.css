@@ -1,34 +1,47 @@
 @import "tailwindcss";
 
+@theme {
+  --font-display: "Fredoka", "Inter", ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 @layer utilities {
-  /* Clean, structured image placeholder styles */
-  .image-placeholder {
-    background-color: #E9EDF2;
-    color: #64748B;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    font-weight: 600;
-    font-size: 0.8125rem;
-    letter-spacing: 0.05em;
-    user-select: none;
-    border: 1px dashed #CBD5E1;
-    transition: all 0.2s ease;
+  /* Confetti dot texture used on placeholders and colorful panels */
+  .confetti-dots {
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.9) 0 3px, transparent 4px),
+      radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.7) 0 2px, transparent 3px),
+      radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.8) 0 2.5px, transparent 3.5px),
+      radial-gradient(circle at 85% 65%, rgba(255, 255, 255, 0.6) 0 3px, transparent 4px);
+    background-size: 120px 120px;
   }
 
-  .image-placeholder:hover {
-    border-color: #94A3B8;
+  /* Soft wave divider at the bottom of the hero */
+  .wave-bottom {
+    -webkit-mask-image: radial-gradient(120% 60px at 50% 0, #000 98%, transparent 100%);
+    mask-image: radial-gradient(120% 60px at 50% 0, #000 98%, transparent 100%);
   }
 
-  /* Specific replaceable hero background placeholder */
-  /* To replace with an actual photo later, simply set the background-image below: */
-  .hero-placeholder-bg {
-    background-color: #DDE3EA;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    /* Example: background-image: url('/path/to/hero.jpg'); */
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  .animate-float-slow {
+    animation: float 9s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-float-slow {
+      animation: none;
+    }
   }
 
   /* Custom subtle scrollbars for independent scrolling panes */
@@ -52,4 +65,3 @@
     scrollbar-color: #CBD5E1 #F1F5F9;
   }
 }
-
