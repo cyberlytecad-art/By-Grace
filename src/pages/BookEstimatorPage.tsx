@@ -472,7 +472,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                       <div className="p-3 sm:p-4 flex-1 flex flex-col">
                         <span className="font-extrabold text-sm sm:text-base text-[#071326] leading-tight">{deal.name}</span>
                         <span className="text-[11px] sm:text-xs text-[#64748B] mt-1 leading-snug">
-                          {deal.description.replace(/\s*\(Easter special price\)/, '')}
+                          {deal.description}
                         </span>
                         <div className="mt-2 flex items-center justify-between gap-2">
                           <span className="text-xl font-black text-[#EC4899]">{money(deal.price)}</span>
@@ -526,7 +526,6 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                 </div>
               )}
 
-              <p className="text-[11px] text-white/85 mt-3">Deal prices are from our Easter specials.</p>
             </div>
 
             {/* STEP 1: CHOOSE RENTAL ITEMS */}

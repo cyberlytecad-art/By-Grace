@@ -55,7 +55,7 @@ export const BOOKABLE_ITEMS: BookableItem[] = [
     price: 225,
     unit: 'package',
     placeholderLabel: 'REPLACE WITH PACKAGE 01 IMAGE',
-    description: '15x15 bounce house + 12 chairs + 2 tables + 10x10 tent. (Easter special price)',
+    description: '15x15 bounce house + 12 chairs + 2 tables + 10x10 tent.',
   },
   {
     id: 'pkg-bundle-02',
@@ -64,7 +64,7 @@ export const BOOKABLE_ITEMS: BookableItem[] = [
     price: 380,
     unit: 'package',
     placeholderLabel: 'REPLACE WITH PACKAGE 02 IMAGE',
-    description: 'Water slide + 12 chairs + 2 tables + 10x10 tent. (Easter special price)',
+    description: 'Water slide + 12 chairs + 2 tables + 10x10 tent.',
   },
   {
     id: 'pkg-bundle-03',
@@ -73,6 +73,6 @@ export const BOOKABLE_ITEMS: BookableItem[] = [
     price: 300,
     unit: 'package',
     placeholderLabel: 'REPLACE WITH PACKAGE 03 IMAGE',
-    description: 'Bounce house and slide combo + 12 chairs + 2 tables + 10x10 tent. (Easter special price)',
+    description: 'Bounce house and slide combo + 12 chairs + 2 tables + 10x10 tent.',
   },
 ];

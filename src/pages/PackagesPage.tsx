@@ -110,7 +110,6 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                   {/* Price / Details Placeholder */}
                   <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg p-3 text-center mb-6">
                     <p className="text-3xl font-black leading-none text-[#087BF5]">{pkg.price}</p>
-                    <p className="text-[11px] font-semibold text-[#64748B] mt-1">Easter special price</p>
                   </div>
                 </div>
 
