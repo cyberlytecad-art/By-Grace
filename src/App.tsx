@@ -29,15 +29,11 @@ export default function App() {
       setSelectedRentalCategory(undefined);
     }
 
-    if (extraData?.preselectedItemId) {
-      setSelectedItemId(extraData.preselectedItemId);
-    } else if (page !== 'estimator') {
-      setSelectedItemId(undefined);
-    }
+    setSelectedItemId(extraData?.preselectedItemId);
   };
 
   return (
-    <div className="min-h-screen bg-white text-[#071326] flex flex-col font-['Inter',sans-serif]">
+    <div className={`min-h-screen ${currentPage === 'home' ? 'party-bg' : 'party-bg calm-bg'} text-[#071326] flex flex-col font-['Inter',sans-serif]`}>
       {/* Universal Header */}
       <Header currentPage={currentPage} onNavigate={handleNavigate} />
 

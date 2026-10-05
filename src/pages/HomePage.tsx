@@ -49,7 +49,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     {
       id: 'packages',
       title: 'Packages',
-      desc: 'Save with our bundles.',
+      desc: 'Bounce house, slide & combo bundles.',
       icon: Package,
       iconColor: 'text-[#8B5CF6]',
       iconBg: 'bg-purple-50',
@@ -58,7 +58,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
   ];
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full">
       {/* 
         HERO SECTION
         Height: approx 650-760px on 1440px desktop
@@ -67,34 +67,30 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <section className="relative w-full overflow-hidden">
         {/* Replaceable Hero Background Container */}
         <div 
-          className="hero-placeholder-bg relative w-full h-[620px] sm:h-[660px] lg:h-[720px] flex items-center"
-          style={{
-            /* 
-              USER NOTE: To replace with your actual high-res hero photo:
-              Simply set background-image: url('YOUR_IMAGE_URL'); in CSS or here
-            */
-            backgroundColor: '#D9DFE7',
-          }}
+          className="hero-placeholder-bg relative w-full h-[640px] sm:h-[min(720px,calc(100svh-140px))] lg:h-[min(780px,calc(100svh-140px))] sm:min-h-[560px] flex items-center pb-16"
         >
-          {/* Visual indicator for the placeholder slot */}
-          <div className="absolute inset-0 flex items-center justify-end pr-10 lg:pr-24 pointer-events-none opacity-40 select-none">
-            <div className="border-2 border-dashed border-[#94A3B8] p-6 rounded-xl text-right max-w-md hidden md:block">
-              <p className="text-xs font-bold text-[#475569] tracking-wider uppercase">
-                [ REPLACE WITH LARGE PARTY RENTAL HERO PHOTO ]
-              </p>
-              <p className="text-[11px] text-[#64748B] mt-1 leading-normal">
-                Intended: Tropical blue water slide on right, green palms, party tent & tables on left, bounce house behind, Florida backyard & blue sky.
-              </p>
+          {/* Photo layers fade out at the bottom so the hero melts into the page instead of ending on a hard edge. */}
+          <div className="hero-fade absolute inset-0">
+            {/* Visual indicator for the placeholder slot */}
+            <div className="absolute inset-0 bg-[#D9DFE7] flex items-center justify-end pr-10 lg:pr-24 pointer-events-none opacity-40 select-none">
+              <div className="border-2 border-dashed border-[#94A3B8] p-6 rounded-xl text-right max-w-md hidden md:block">
+                <p className="text-xs font-bold text-[#475569] tracking-wider uppercase">
+                  [ REPLACE WITH LARGE PARTY RENTAL HERO PHOTO ]
+                </p>
+                <p className="text-[11px] text-[#64748B] mt-1 leading-normal">
+                  Intended: Tropical blue water slide on right, green palms, party tent & tables on left, bounce house behind, Florida backyard & blue sky.
+                </p>
+              </div>
             </div>
+
+            <SlotImage image={HERO} eager />
+
+            {/* Subtle dark/blue translucent gradient overlay on left for readability */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-r from-[#071326]/85 via-[#071326]/55 to-transparent pointer-events-none"
+              aria-hidden="true"
+            />
           </div>
-
-          <SlotImage image={HERO} eager />
-
-          {/* Subtle dark/blue translucent gradient overlay on left for readability */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-r from-[#071326]/85 via-[#071326]/55 to-transparent pointer-events-none"
-            aria-hidden="true"
-          />
 
           {/* Hero Content aligned ~10-12% from the left edge */}
           <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-12 lg:px-16 xl:px-24">
@@ -145,14 +141,10 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* 
-          BOTTOM CATEGORY BAR
-          5 rectangular cards: Inflatables, Tents, Tables & Chairs, Concessions, Packages
-          Row sits partially over the bottom portion of the hero image.
-        */}
-        <div className="relative -mt-10 sm:-mt-12 lg:-mt-14 z-20 max-w-[1250px] mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-3.5">
-            {categoryCards.map((card) => {
+        {/* BOTTOM CATEGORY BAR: one frosted glass strip resting on the faded bottom of the hero. */}
+        <div className="relative -mt-32 sm:-mt-36 z-20 max-w-[1250px] mx-auto px-4 sm:px-6 pb-12">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-px bg-white/50 rounded-2xl overflow-hidden border border-white/70 shadow-2xl shadow-[#071326]/20 backdrop-blur-xl">
+            {categoryCards.map((card, i) => {
               const IconComponent = card.icon;
               return (
                 <div
@@ -161,19 +153,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     onNavigate(card.targetPage);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="cursor-pointer bg-white hover:bg-[#FAFCFF] border border-[#E8ECF1] hover:border-[#CBD5E1] rounded-[10px] p-4.5 sm:p-5 h-[112px] sm:h-[118px] flex flex-col justify-between shadow-xs transition-all hover:translate-y-[-2px] group"
+                  className={`cursor-pointer bg-white/75 hover:bg-white p-4 sm:p-5 flex items-center gap-3.5 transition-colors group ${i === categoryCards.length - 1 ? 'col-span-2 lg:col-span-1' : ''}`}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <div className={`w-8 h-8 rounded-lg ${card.iconBg} ${card.iconColor} flex items-center justify-center shrink-0`}>
-                      <IconComponent className="w-4 h-4 stroke-[2.2]" />
-                    </div>
-                    <span className="font-bold text-sm sm:text-[15px] text-[#071326] group-hover:text-[#087BF5] transition-colors leading-tight">
+                  <div className={`w-11 h-11 rounded-xl ${card.iconBg} ${card.iconColor} flex items-center justify-center shrink-0 transition-transform group-hover:scale-110`}>
+                    <IconComponent className="w-5 h-5 stroke-[2.2]" />
+                  </div>
+                  <div className="min-w-0">
+                    <span className="block font-bold text-sm sm:text-[15px] text-[#071326] group-hover:text-[#087BF5] transition-colors leading-tight">
                       {card.title}
                     </span>
+                    <p className="text-[11px] sm:text-xs text-[#64748B] leading-snug mt-0.5 line-clamp-2">
+                      {card.desc}
+                    </p>
                   </div>
-                  <p className="text-[11px] sm:text-xs text-[#64748B] leading-tight line-clamp-2 pl-0.5">
-                    {card.desc}
-                  </p>
                 </div>
               );
             })}
@@ -183,16 +175,16 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Trust & Local Service Highlight Banner */}
       <section className="max-w-[1250px] mx-auto px-4 sm:px-6 mt-16 sm:mt-20">
-        <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="sunny-band shadow-2xl shadow-[#F97316]/30 rounded-[28px] p-7 sm:p-10 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center md:text-left">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
+            <p className="text-xs font-bold uppercase tracking-wider text-white/90">
               Local & Family-Owned in Haines City, FL
             </p>
-            <h2 className="text-xl sm:text-2xl font-extrabold text-[#071326]">
+            <h2 className="text-2xl sm:text-3xl font-black text-white drop-shadow-sm">
               Planning a Birthday, School Event, or Church Gathering?
             </h2>
-            <p className="text-sm text-[#64748B]">
-              We deliver, set up, and inspect every inflatable, tent, and table so your event runs seamlessly.
+            <p className="text-sm sm:text-base text-white/95">
+              We deliver, set up and clean every bounce house, water slide, tent and table so your event runs smoothly.
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
@@ -201,13 +193,13 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                 onNavigate('rentals');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="bg-[#087BF5] hover:bg-[#076edc] text-white px-5 py-2.5 rounded-[8px] font-semibold text-sm transition-colors"
+              className="bg-white hover:bg-[#FFF7ED] text-[#C2410C] px-6 py-3 rounded-full font-bold text-sm shadow-lg transition-colors"
             >
               Browse Catalog
             </button>
             <a
               href="tel:8632804175"
-              className="border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] bg-white px-4 py-2.5 rounded-[8px] font-semibold text-sm transition-colors"
+              className="border-2 border-white/90 hover:bg-white/15 text-white px-5 py-[10px] rounded-full font-bold text-sm transition-colors"
             >
               863-280-4175
             </a>

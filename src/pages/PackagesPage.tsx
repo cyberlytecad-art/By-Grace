@@ -2,79 +2,56 @@ import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 import { PageId } from '../types';
 import { SlotImage } from '../components/SlotImage';
+import { PageBand } from '../components/PageBand';
 import { PACKAGE_IMAGES } from '../data/siteImages';
 
 interface PackagesPageProps {
-  onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
+  onNavigate: (page: PageId, extraData?: { preselectedCategory?: string; preselectedItemId?: string }) => void;
 }
 
 export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
+  // The three bundles from By Grace's "Especiales de Pascua" (Easter) flyer on Instagram.
+  const sharedExtras = ['12 Chairs', '2 Tables', '10x10 Tent'];
   const packages = [
     {
       id: 'pkg-01',
       code: 'PACKAGE 01',
-      name: 'Backyard Birthday Bundle',
+      name: 'Bounce House Package',
       placeholderLabel: 'REPLACE WITH PACKAGE 01 IMAGE',
-      description: 'Ideal for home birthdays and family gatherings. Includes a commercial bounce house, tables, and chairs.',
-      details: [
-        'Choice of Standard Themed Bounce House (15x15)',
-        '2 Commercial 6ft Folding Tables',
-        '12 White Folding Chairs',
-        'Complete Delivery, Setup & Takedown',
-      ],
-      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
+      description: 'A 15x15 bounce house with seating and shade for a backyard birthday or family party.',
+      details: ['15x15 Bounce House', ...sharedExtras],
+      price: '$225',
     },
     {
       id: 'pkg-02',
       code: 'PACKAGE 02',
-      name: 'Summer Splash Combo Bundle',
+      name: 'Water Slide Package',
       placeholderLabel: 'REPLACE WITH PACKAGE 02 IMAGE',
-      description: 'Our most popular Florida summer package. Beat the heat with an inflatable water slide and heavy-duty shade tent.',
-      details: [
-        'Commercial Water Slide or Wet/Dry Combo',
-        '10x20 Commercial Canopy / Event Tent',
-        '3 Commercial Folding Tables + 18 Chairs',
-        'Commercial Hose & Anchor Setup Included',
-      ],
-      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
+      description: 'A water slide with seating and shade to keep everyone cool on a hot Florida day.',
+      details: ['Water Slide', ...sharedExtras],
+      price: '$380',
     },
     {
       id: 'pkg-03',
       code: 'PACKAGE 03',
-      name: 'Ultimate Community Celebration',
+      name: 'Combo Package',
       placeholderLabel: 'REPLACE WITH PACKAGE 03 IMAGE',
-      description: 'The complete package for school festivals, church events, corporate picnics, and neighborhood block parties.',
-      details: [
-        'Large Inflatable Water Slide or Multi-Play Combo',
-        '20x20 High Peak Event Tent',
-        '4 Tables + 24 Chairs',
-        'Popcorn or Cotton Candy Machine with Supplies',
-      ],
-      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
+      description: 'A bounce house and slide combo with seating and shade, so kids can jump and slide all day.',
+      details: ['Bounce House & Slide Combo', ...sharedExtras],
+      price: '$300',
     },
   ];
 
   return (
-    <div className="w-full bg-white pb-20">
-      <div className="max-w-[1250px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
-        {/* Header Block: Left Aligned, matching Rentals page */}
-        <div className="text-left mb-10 md:mb-12">
-          {/* Small uppercase blue eyebrow */}
-          <p className="text-xs md:text-sm font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-2">
-            PACKAGES
-          </p>
+    <div className="w-full pb-20">
+      <PageBand eyebrow="PACKAGES" title={<>Party <span className="text-[#087BF5]">Packages</span></>}>
+        <p>
+          Pick a bounce house, water slide or combo and get chairs, tables and a tent with it.
+          We deliver and set everything up in Haines City and across Central Florida.
+        </p>
+      </PageBand>
 
-          {/* Large heading */}
-          <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
-            Party <span className="text-[#087BF5]">Packages</span>
-          </h1>
-
-          {/* Supporting paragraph */}
-          <p className="text-base sm:text-[17px] text-[#64748B] max-w-[800px] leading-relaxed">
-            Bundle your bounce houses, water slides, tents, tables, and chairs to get the best value for your event.
-            All packages include delivery, sanitization, professional setup, and takedown in Haines City and Central Florida.
-          </p>
-        </div>
+      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 mt-2">
 
         {/* 
           PACKAGES GRID
@@ -86,7 +63,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
             return (
               <div
                 key={pkg.id}
-                className="bg-white border border-[#E8ECF1] hover:border-[#CBD5E1] rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
+                className="bg-white border border-[#D3DDE9] hover:border-[#087BF5] shadow-lg shadow-[#071326]/10 hover:shadow-xl rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
               >
                 <div>
                   {/* Eyebrow & Package Code */}
@@ -132,21 +109,19 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
                   {/* Price / Details Placeholder */}
                   <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg p-3 text-center mb-6">
-                    <p className="text-[11px] font-bold text-[#64748B] tracking-wider uppercase">
-                      {pkg.pricePlaceholder}
-                    </p>
+                    <p className="text-3xl font-black leading-none text-[#087BF5]">{pkg.price}</p>
                   </div>
                 </div>
 
                 {/* Action Button */}
                 <button
                   onClick={() => {
-                    onNavigate('estimator', { preselectedCategory: pkg.name });
+                    onNavigate('estimator', { preselectedCategory: 'packages', preselectedItemId: pkg.id.replace('pkg-', 'pkg-bundle-') });
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className="w-full py-3 bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white font-bold text-sm rounded-[8px] flex items-center justify-center gap-2 transition-colors"
                 >
-                  <span>Book & Price This Package</span>
+                  <span>Choose This Package</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.2]" />
                 </button>
               </div>
@@ -155,21 +130,21 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Custom Bundling note */}
-        <div className="mt-14 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
-          <h4 className="text-lg font-bold text-[#071326]">
-            Need a custom package for your specific event size?
+        <div className="mt-14 sunny-band plain-band shadow-2xl shadow-[#F97316]/30 rounded-[28px] p-7 sm:p-10 text-center max-w-2xl mx-auto">
+          <h4 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">
+            Need something different for your event?
           </h4>
-          <p className="text-sm text-[#64748B] mt-1.5 mb-5">
-            We customize packages with extra tables, chairs, generators, and multiple inflatables. Build and price your custom package in real time!
+          <p className="text-sm sm:text-base text-white/95 mt-1.5 mb-6">
+            Mix and match bounce houses, slides, tents, tables and chairs. Build your quote and we'll confirm the price with you.
           </p>
           <button
             onClick={() => {
               onNavigate('estimator');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="px-6 py-2.5 bg-[#087BF5] hover:bg-[#076edc] text-white text-sm font-semibold rounded-[8px] transition-colors"
+            className="px-7 py-3 bg-white hover:bg-[#FFF7ED] text-[#C2410C] text-sm font-bold rounded-full shadow-lg transition-colors"
           >
-            Customize Your Package & Estimate →
+            Build Your Own Quote →
           </button>
         </div>
       </div>

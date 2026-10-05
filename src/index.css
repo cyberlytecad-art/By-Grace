@@ -1,6 +1,98 @@
 @import "tailwindcss";
 
 @layer utilities {
+  .hero-fade {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.5) 78%, transparent 96%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.5) 78%, transparent 96%);
+  }
+
+  /* Bold party backdrop behind every page: saturated color glows + confetti */
+  .party-bg {
+    background-color: #D6E9FF;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220' opacity='0.38'%3E %3Ccircle cx='18' cy='24' r='4' fill='%23087BF5'/%3E %3Crect x='70' y='14' width='10' height='5' rx='2.5' transform='rotate(35 75 16)' fill='%23EC4899'/%3E %3Cpath d='M130 30 q6 -8 12 0 t12 0' stroke='%2322C55E' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Ccircle cx='190' cy='40' r='3' fill='%23F59E0B'/%3E %3Crect x='30' y='80' width='11' height='5' rx='2.5' transform='rotate(-25 35 82)' fill='%238B5CF6'/%3E %3Cpath d='M100 88 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z' fill='%23F97316'/%3E %3Ccircle cx='165' cy='95' r='5' fill='%23EC4899'/%3E %3Cpath d='M14 150 q6 -8 12 0 t12 0' stroke='%23F59E0B' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Crect x='82' y='150' width='10' height='5' rx='2.5' transform='rotate(60 87 152)' fill='%23087BF5'/%3E %3Ccircle cx='140' cy='165' r='3.5' fill='%238B5CF6'/%3E %3Crect x='185' y='140' width='11' height='5' rx='2.5' transform='rotate(-50 190 142)' fill='%2322C55E'/%3E %3Ccircle cx='60' cy='200' r='3' fill='%23F97316'/%3E %3Cpath d='M150 205 q6 -8 12 0 t12 0' stroke='%23087BF5' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3C/svg%3E"),
+      radial-gradient(48rem 34rem at -5% 0%, rgba(14, 165, 233, 0.55), transparent 62%),
+      radial-gradient(44rem 32rem at 105% 10%, rgba(250, 204, 21, 0.55), transparent 62%),
+      radial-gradient(50rem 36rem at 95% 75%, rgba(236, 72, 153, 0.45), transparent 62%),
+      radial-gradient(46rem 34rem at 0% 95%, rgba(34, 197, 94, 0.42), transparent 62%),
+      radial-gradient(40rem 30rem at 50% 50%, rgba(139, 92, 246, 0.22), transparent 70%);
+    background-size: 300px 300px, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%;
+    background-attachment: scroll, fixed, fixed, fixed, fixed, fixed;
+  }
+
+  /* Inner pages: same soft color glows, no confetti */
+  .party-bg.calm-bg {
+    background-image:
+      radial-gradient(48rem 34rem at -5% 0%, rgba(14, 165, 233, 0.35), transparent 62%),
+      radial-gradient(44rem 32rem at 105% 10%, rgba(250, 204, 21, 0.3), transparent 62%),
+      radial-gradient(50rem 36rem at 95% 75%, rgba(236, 72, 153, 0.25), transparent 62%),
+      radial-gradient(46rem 34rem at 0% 95%, rgba(34, 197, 94, 0.25), transparent 62%);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+  }
+
+  /* Full-width page header band: blue to violet to pink, with white confetti */
+  .party-band {
+    background-color: #0A6CF0;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220' opacity='0.3'%3E %3Ccircle cx='18' cy='24' r='4' fill='rgba(255,255,255,.55)'/%3E %3Crect x='70' y='14' width='10' height='5' rx='2.5' transform='rotate(35 75 16)' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M130 30 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Ccircle cx='190' cy='40' r='3' fill='rgba(255,255,255,.55)'/%3E %3Crect x='30' y='80' width='11' height='5' rx='2.5' transform='rotate(-25 35 82)' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M100 88 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='165' cy='95' r='5' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M14 150 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Crect x='82' y='150' width='10' height='5' rx='2.5' transform='rotate(60 87 152)' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='140' cy='165' r='3.5' fill='rgba(255,255,255,.55)'/%3E %3Crect x='185' y='140' width='11' height='5' rx='2.5' transform='rotate(-50 190 142)' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='60' cy='200' r='3' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M150 205 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3C/svg%3E"),
+      radial-gradient(30rem 20rem at 85% 0%, rgba(250, 204, 21, 0.45), transparent 65%),
+      linear-gradient(120deg, #0A6CF0 0%, #6D28D9 55%, #EC4899 100%);
+    background-size: 220px 220px, 100% 100%, 100% 100%;
+  }
+
+  /* Warm call-to-action band: sunshine yellow to orange to pink */
+  .sunny-band {
+    background-color: #F97316;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220' opacity='0.3'%3E %3Ccircle cx='18' cy='24' r='4' fill='rgba(255,255,255,.55)'/%3E %3Crect x='70' y='14' width='10' height='5' rx='2.5' transform='rotate(35 75 16)' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M130 30 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Ccircle cx='190' cy='40' r='3' fill='rgba(255,255,255,.55)'/%3E %3Crect x='30' y='80' width='11' height='5' rx='2.5' transform='rotate(-25 35 82)' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M100 88 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='165' cy='95' r='5' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M14 150 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Crect x='82' y='150' width='10' height='5' rx='2.5' transform='rotate(60 87 152)' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='140' cy='165' r='3.5' fill='rgba(255,255,255,.55)'/%3E %3Crect x='185' y='140' width='11' height='5' rx='2.5' transform='rotate(-50 190 142)' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='60' cy='200' r='3' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M150 205 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3C/svg%3E"),
+      linear-gradient(120deg, #F59E0B 0%, #F97316 45%, #EC4899 100%);
+    background-size: 220px 220px, 100% 100%;
+  }
+
+  /* Same warm gradient without the confetti pattern (inner pages) */
+  .sunny-band.plain-band {
+    background-image: linear-gradient(120deg, #F59E0B 0%, #F97316 45%, #EC4899 100%);
+    background-size: 100% 100%;
+  }
+
+  /* Deep night-sky footer */
+  .night-band {
+    background-color: #0B1430;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220' opacity='0.3'%3E %3Ccircle cx='18' cy='24' r='4' fill='rgba(255,255,255,.55)'/%3E %3Crect x='70' y='14' width='10' height='5' rx='2.5' transform='rotate(35 75 16)' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M130 30 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Ccircle cx='190' cy='40' r='3' fill='rgba(255,255,255,.55)'/%3E %3Crect x='30' y='80' width='11' height='5' rx='2.5' transform='rotate(-25 35 82)' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M100 88 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='165' cy='95' r='5' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M14 150 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3Crect x='82' y='150' width='10' height='5' rx='2.5' transform='rotate(60 87 152)' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='140' cy='165' r='3.5' fill='rgba(255,255,255,.55)'/%3E %3Crect x='185' y='140' width='11' height='5' rx='2.5' transform='rotate(-50 190 142)' fill='rgba(255,255,255,.55)'/%3E %3Ccircle cx='60' cy='200' r='3' fill='rgba(255,255,255,.55)'/%3E %3Cpath d='M150 205 q6 -8 12 0 t12 0' stroke='rgba(255,255,255,.55)' stroke-width='3' fill='none' stroke-linecap='round'/%3E %3C/svg%3E"),
+      radial-gradient(36rem 24rem at 0% 0%, rgba(8, 123, 245, 0.45), transparent 65%),
+      radial-gradient(36rem 24rem at 100% 100%, rgba(236, 72, 153, 0.35), transparent 65%),
+      linear-gradient(160deg, #0B1430 0%, #1E1B4B 100%);
+    background-size: 220px 220px, 100% 100%, 100% 100%, 100% 100%;
+  }
+
+  /* Thin rainbow stripe used on the header and footer edges */
+  .party-stripe {
+    background: linear-gradient(90deg, #087BF5, #22C55E, #FACC15, #F97316, #EC4899, #8B5CF6);
+  }
+
+  /* Gradient color for highlighted heading words */
+  .party-text {
+    background: linear-gradient(90deg, #087BF5 0%, #8B5CF6 50%, #EC4899 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Highlighted heading words on a colored band */
+  .sun-text {
+    background: linear-gradient(90deg, #FDE047 0%, #FDBA74 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Soft pastel fill for "photo coming soon" style tiles */
+  .party-banner {
+    background: linear-gradient(120deg, #E0F2FE 0%, #FEF3C7 50%, #FCE7F3 100%);
+  }
+
   /* Clean, structured image placeholder styles */
   .image-placeholder {
     background-color: #E9EDF2;
@@ -21,10 +113,19 @@
     border-color: #94A3B8;
   }
 
+  /* Once a real photo has loaded, hide the placeholder label and dashed border behind it */
+  .image-placeholder:has(> img.slot-loaded) {
+    border-color: transparent;
+    overflow: hidden;
+  }
+  .image-placeholder:has(> img.slot-loaded) > :not(img) {
+    visibility: hidden;
+  }
+
   /* Specific replaceable hero background placeholder */
   /* To replace with an actual photo later, simply set the background-image below: */
   .hero-placeholder-bg {
-    background-color: #DDE3EA;
+    background-color: transparent;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

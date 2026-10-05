@@ -14,12 +14,37 @@ import {
   Armchair, 
   Popcorn, 
   Package, 
-  Layers
+  Layers,
+  Waves,
+  Castle,
+  PartyPopper
 } from 'lucide-react';
 import { BookableItem, SelectedCartItem, BookingDetails, BookingConfirmation } from '../types';
 import { BOOKABLE_ITEMS, DELIVERY_CITIES } from '../data/rentalCatalog';
 import { SlotImage } from '../components/SlotImage';
 import { imageForItem } from '../data/siteImages';
+import { RENTAL_INVENTORY } from '../data/rentalInventory';
+
+/** Prices By Grace hasn't confirmed are null and show as an obvious $XXX placeholder. */
+const money = (n: number | null, from = false) => (n === null ? '$XXX' : `${from ? 'From ' : ''}$${n}`);
+
+const lineTotal = (price: number | null, qty: number) => (price === null ? null : price * qty);
+
+/** Adds amounts, but any unconfirmed (null) part makes the whole sum unconfirmed. */
+const sumKnown = (parts: (number | null)[]) =>
+  parts.some((p) => p === null) ? null : parts.reduce<number>((a, p) => a + (p as number), 0);
+
+const INFLATABLE_CATEGORIES = ['water-slides', 'bounce-houses', 'combos'];
+
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  'water-slides': Waves,
+  'bounce-houses': Castle,
+  combos: Sparkles,
+  tents: Tent,
+  'tables-chairs': Armchair,
+  concessions: Popcorn,
+  'decor-more': PartyPopper,
+};
 
 interface BookEstimatorPageProps {
   initialItemId?: string;
@@ -33,12 +58,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   // Category filter for the item catalog
   const [selectedCategoryTab, setSelectedCategoryTab] = useState<string>(() => {
     if (initialCategory) {
+      if (initialCategory === 'packages' || RENTAL_INVENTORY.some((sec) => sec.id === initialCategory)) return initialCategory;
       const lower = initialCategory.toLowerCase();
-      if (lower.includes('inflatable') || lower.includes('water') || lower.includes('bounce') || lower.includes('slide')) return 'inflatables';
-      if (lower.includes('tent')) return 'tents';
-      if (lower.includes('table') || lower.includes('chair')) return 'tables-chairs';
-      if (lower.includes('concession') || lower.includes('popcorn')) return 'concessions';
       if (lower.includes('package') || lower.includes('bundle')) return 'packages';
+      const section = RENTAL_INVENTORY.find((sec) => sec.name.toLowerCase() === lower);
+      if (section) return section.id;
     }
     return 'all';
   });
@@ -52,14 +76,13 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     if (initialCategory) {
       // Find the first matching item in that category
       const found = BOOKABLE_ITEMS.find(item => 
-        item.name.toLowerCase().includes(initialCategory.toLowerCase()) ||
-        item.category.toLowerCase().includes(initialCategory.toLowerCase())
+        item.category === initialCategory ||
+        item.name.toLowerCase().includes(initialCategory.toLowerCase())
       );
       if (found) return [{ item: found, quantity: 1 }];
     }
-    // Default starter item: popular water slide so the user immediately sees a working estimate
-    const defaultItem = BOOKABLE_ITEMS.find(i => i.id === 'ws-18-tropical');
-    return defaultItem ? [{ item: defaultItem, quantity: 1 }] : [];
+    // Start empty so the deal picker or the item list is the customer's first choice.
+    return [];
   });
 
   // Booking details form state
@@ -71,7 +94,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     startTime: '11:00 AM',
     endTime: '07:00 PM',
     streetAddress: '',
-    city: 'Haines City (Local)',
+    city: 'Haines City',
     surfaceType: 'grass',
     duration: 'single-day',
     notes: '',
@@ -86,6 +109,32 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   const rightPaneRef = useRef<HTMLDivElement>(null);
 
   // Cart modifications
+  // The bundles from the Packages page. Picking one swaps out any other deal already chosen.
+  const deals = useMemo(() => BOOKABLE_ITEMS.filter((i) => i.category === 'packages'), []);
+  const chosenDealId = cart.find((c) => c.item.category === 'packages')?.item.id;
+  const handleChooseDeal = (deal: BookableItem) => {
+    setCart((prev) => {
+      const withoutDeals = prev.filter((c) => c.item.category !== 'packages');
+      return chosenDealId === deal.id ? withoutDeals : [...withoutDeals, { item: deal, quantity: 1 }];
+    });
+  };
+
+  // Each deal includes one main unit, and the customer picks which one.
+  const DEAL_UNIT_SECTION: Record<string, string> = {
+    'pkg-bundle-01': 'bounce-houses',
+    'pkg-bundle-02': 'water-slides',
+    'pkg-bundle-03': 'combos',
+  };
+  const chosenDeal = cart.find((c) => c.item.category === 'packages');
+  const dealUnitSection = chosenDeal
+    ? RENTAL_INVENTORY.find((sec) => sec.id === DEAL_UNIT_SECTION[chosenDeal.item.id])
+    : undefined;
+  const handlePickDealUnit = (unitName: string) => {
+    setCart((prev) =>
+      prev.map((c) => (c.item.category === 'packages' ? { ...c, choice: unitName } : c))
+    );
+  };
+
   const handleAddItem = (item: BookableItem) => {
     setCart((prev) => {
       const existing = prev.find((c) => c.item.id === item.id);
@@ -117,32 +166,31 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     return DELIVERY_CITIES.find((c) => c.name === details.city) || DELIVERY_CITIES[0];
   }, [details.city]);
 
-  const subtotal = useMemo(() => {
-    return cart.reduce((acc, c) => acc + c.item.price * c.quantity, 0);
-  }, [cart]);
+  const subtotal = useMemo(() => sumKnown(cart.map((c) => lineTotal(c.item.price, c.quantity))), [cart]);
+  const subtotalFrom = cart.some((c) => c.item.priceFrom);
 
-  const deliveryFee = selectedCityObj ? selectedCityObj.fee : 0;
+  const deliveryFee = selectedCityObj ? selectedCityObj.fee : null;
 
+  // Extra charges for hard surfaces and longer rentals aren't confirmed yet, so they show as $XXX.
   const surfaceFee = useMemo(() => {
     if (details.surfaceType === 'concrete' || details.surfaceType === 'indoor') {
-      const inflatablesCount = cart.filter(c => c.item.category === 'inflatables').reduce((sum, c) => sum + c.quantity, 0);
-      return inflatablesCount > 0 ? 25 : 0;
+      const inflatablesCount = cart.filter(c => INFLATABLE_CATEGORIES.includes(c.item.category)).reduce((sum, c) => sum + c.quantity, 0);
+      return inflatablesCount > 0 ? null : 0;
     }
     return 0;
   }, [details.surfaceType, cart]);
 
-  const durationFee = useMemo(() => {
-    if (details.duration === 'overnight') return 50;
-    if (details.duration === 'weekend') return Math.round(subtotal * 0.5); // 50% discount for 2nd day
-    return 0;
-  }, [details.duration, subtotal]);
+  const durationFee = details.duration === 'single-day' ? 0 : null;
 
-  const grandTotal = subtotal + deliveryFee + surfaceFee + durationFee;
+  const grandTotal = sumKnown([subtotal, deliveryFee, surfaceFee, durationFee]);
 
   // Validation
   const validateForm = () => {
     const errors: Record<string, string> = {};
     if (cart.length === 0) errors.cart = 'Please add at least one rental item to estimate & book.';
+    if (dealUnitSection && !chosenDeal?.choice) {
+      errors.cart = `Please pick which ${dealUnitSection.name.toLowerCase().replace(/s$/, '')} you want with your deal.`;
+    }
     if (!details.fullName.trim()) errors.fullName = 'Full Name is required.';
     if (!details.phone.trim()) errors.phone = 'Phone number is required.';
     if (!details.email.trim() || !/\S+@\S+\.\S+/.test(details.email)) {
@@ -169,6 +217,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
       customerDetails: { ...details },
       items: [...cart],
       subtotal,
+      subtotalFrom,
       deliveryFee,
       surfaceFee,
       durationFee,
@@ -192,17 +241,14 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
 
   const categories = [
     { id: 'all', label: 'All Equipment', icon: Layers },
-    { id: 'inflatables', label: 'Inflatables', icon: Sparkles },
-    { id: 'tents', label: 'Tents', icon: Tent },
-    { id: 'tables-chairs', label: 'Tables & Chairs', icon: Armchair },
-    { id: 'concessions', label: 'Concessions', icon: Popcorn },
+    ...RENTAL_INVENTORY.map((sec) => ({ id: sec.id, label: sec.name, icon: CATEGORY_ICONS[sec.id] ?? Sparkles })),
     { id: 'packages', label: 'Packages', icon: Package },
   ];
 
   // If in confirmation view
   if (confirmation) {
     return (
-      <div className="w-full bg-white pb-24">
+      <div className="w-full pb-24">
         <div className="max-w-[850px] mx-auto px-4 sm:px-6 pt-12 md:pt-16">
           <div className="border border-[#CBD5E1] rounded-2xl p-6 sm:p-10 shadow-sm bg-white">
             {/* Top Success Badge */}
@@ -282,12 +328,15 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                   <div key={cartItem.item.id} className="p-4 flex items-center justify-between text-sm">
                     <div>
                       <span className="font-bold text-[#071326]">{cartItem.item.name}</span>
+                      {cartItem.choice && (
+                        <span className="text-xs font-semibold text-[#087BF5] block mt-0.5">With: {cartItem.choice}</span>
+                      )}
                       <span className="text-xs text-[#64748B] block mt-0.5">
-                        Qty: {cartItem.quantity} &times; ${cartItem.item.price} per {cartItem.item.unit}
+                        Qty: {cartItem.quantity} &times; {money(cartItem.item.price, cartItem.item.priceFrom)} per {cartItem.item.unit}
                       </span>
                     </div>
                     <span className="font-bold text-[#071326]">
-                      ${cartItem.item.price * cartItem.quantity}
+                      {money(lineTotal(cartItem.item.price, cartItem.quantity), cartItem.item.priceFrom)}
                     </span>
                   </div>
                 ))}
@@ -297,27 +346,27 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
               <div className="bg-[#F8FAFC] p-4 border-t border-[#E8ECF1] space-y-2 text-sm">
                 <div className="flex justify-between text-[#64748B]">
                   <span>Equipment Subtotal</span>
-                  <span>${confirmation.subtotal}</span>
+                  <span>{money(confirmation.subtotal, confirmation.subtotalFrom)}</span>
                 </div>
                 <div className="flex justify-between text-[#64748B]">
                   <span>Delivery ({confirmation.customerDetails.city})</span>
-                  <span>{confirmation.deliveryFee === 0 ? 'FREE' : `$${confirmation.deliveryFee}`}</span>
+                  <span>{money(confirmation.deliveryFee)}</span>
                 </div>
-                {confirmation.surfaceFee > 0 && (
+                {confirmation.surfaceFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Hard Surface Sandbag Weighting</span>
-                    <span>${confirmation.surfaceFee}</span>
+                    <span>{money(confirmation.surfaceFee)}</span>
                   </div>
                 )}
-                {confirmation.durationFee > 0 && (
+                {confirmation.durationFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Duration Extension Fee</span>
-                    <span>${confirmation.durationFee}</span>
+                    <span>{money(confirmation.durationFee)}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-center text-lg sm:text-xl font-black text-[#071326] pt-3 border-t border-[#E8ECF1]">
                   <span>Estimated Total</span>
-                  <span className="text-[#087BF5]">${confirmation.total}</span>
+                  <span className="text-[#087BF5]">{money(confirmation.total, confirmation.subtotalFrom)}</span>
                 </div>
               </div>
             </div>
@@ -357,28 +406,24 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   }
 
   return (
-    <div className="w-full bg-white lg:h-[calc(100vh-82px)] lg:overflow-hidden flex flex-col">
+    <div className="w-full lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
       {/* Top Header Bar */}
-      <div className="border-b border-[#E8ECF1] bg-white shrink-0 py-3 sm:py-4 px-4 sm:px-6">
+      <div className="shrink-0 pt-5 pb-2 sm:pt-6 px-4 sm:px-6">
         <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
               <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#087BF5]">
                 ONLINE BOOKING & ESTIMATE
               </p>
-              <span className="hidden sm:inline text-[#CBD5E1]">&bull;</span>
-              <span className="hidden sm:inline text-xs text-[#64748B]">
-                Independent Scroll Panes
-              </span>
             </div>
-            <h1 className="text-xl sm:text-2xl lg:text-[25px] font-black tracking-tight leading-tight text-[#071326]">
+            <h1 className="text-xl sm:text-2xl lg:text-[27px] font-black tracking-tight leading-tight text-[#071326]">
               Book & Price Estimate <span className="text-[#087BF5]">All at Once</span>
             </h1>
           </div>
-          <div className="hidden md:flex items-center gap-3 text-xs text-[#64748B]">
+          <div className="hidden md:flex items-center gap-3 text-xs text-[#475569]">
             <span>Haines City & Central FL Delivery</span>
-            <span className="text-[#CBD5E1]">&bull;</span>
-            <a href="tel:8632804175" className="font-bold text-[#087BF5] hover:underline">
+            <span className="text-[#94A3B8]">&bull;</span>
+            <a href="tel:8632804175" className="font-bold text-[#071326] px-3 py-1.5 rounded-full bg-white border border-[#D3DDE9] hover:border-[#087BF5]">
               863-280-4175
             </a>
           </div>
@@ -401,8 +446,90 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
             className="lg:col-span-7 lg:h-full lg:overflow-y-auto lg:pr-4 independent-scroll space-y-8 pb-16 lg:pb-12"
           >
 
+            {/* QUICK PICK: one tap on a deal puts it in the quote */}
+            <div className="sunny-band plain-band rounded-[24px] p-5 sm:p-7 shadow-xl shadow-[#F97316]/25">
+              <div className="mb-4">
+                <span className="text-xs font-bold uppercase tracking-wider text-white/90">Quick pick</span>
+                <h2 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">Choose a Deal</h2>
+                <p className="text-sm text-white/90 mt-0.5">Tap one to add it to your quote, or build your own below.</p>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                {deals.map((deal) => {
+                  const chosen = chosenDealId === deal.id;
+                  return (
+                    <button
+                      key={deal.id}
+                      type="button"
+                      onClick={() => handleChooseDeal(deal)}
+                      aria-pressed={chosen}
+                      className={`relative text-left bg-white rounded-2xl overflow-hidden flex sm:flex-col transition-all shadow-lg hover:-translate-y-0.5 ${
+                        chosen ? 'ring-4 ring-[#087BF5] ring-offset-2 ring-offset-[#F97316]' : 'hover:shadow-xl'
+                      }`}
+                    >
+                      <div className="relative w-28 sm:w-full shrink-0 aspect-[4/3] bg-[#E9EDF2]">
+                        <SlotImage image={deal.image ?? imageForItem(deal.id)} />
+                      </div>
+                      <div className="p-3 sm:p-4 flex-1 flex flex-col">
+                        <span className="font-extrabold text-sm sm:text-base text-[#071326] leading-tight">{deal.name}</span>
+                        <span className="text-[11px] sm:text-xs text-[#64748B] mt-1 leading-snug">
+                          {deal.description}
+                        </span>
+                        <div className="mt-2 flex items-center justify-between gap-2">
+                          <span className="text-xl font-black text-[#EC4899]">{money(deal.price)}</span>
+                          <span
+                            className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${
+                              chosen ? 'bg-[#087BF5] text-white' : 'bg-[#FFF7ED] text-[#C2410C]'
+                            }`}
+                          >
+                            {chosen ? '✓ Chosen' : 'Choose'}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+              {chosenDeal && dealUnitSection && (
+                <div className="mt-4 bg-white rounded-2xl p-4 sm:p-5 shadow-lg">
+                  <p className="font-extrabold text-sm sm:text-base text-[#071326]">
+                    Which {dealUnitSection.name.toLowerCase().replace(/s$/, '')} do you want?
+                  </p>
+                  <p className="text-xs text-[#64748B] mt-0.5 mb-3">
+                    Your {chosenDeal.item.name.toLowerCase()} comes with one. Tap to pick.
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                    {dealUnitSection.items.map((unit) => {
+                      const picked = chosenDeal.choice === unit.name;
+                      return (
+                        <button
+                          key={unit.id}
+                          type="button"
+                          onClick={() => handlePickDealUnit(unit.name)}
+                          aria-pressed={picked}
+                          className={`relative text-left rounded-xl overflow-hidden border-2 transition-all ${
+                            picked ? 'border-[#087BF5] shadow-md' : 'border-[#E2E8F0] hover:border-[#93C5FD]'
+                          }`}
+                        >
+                          <div className="relative w-full aspect-[4/3] bg-[#E9EDF2]">
+                            {unit.image && <SlotImage image={unit.image} />}
+                            {picked && (
+                              <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-[#087BF5] text-white text-xs font-bold flex items-center justify-center shadow">
+                                ✓
+                              </span>
+                            )}
+                          </div>
+                          <span className="block px-2.5 py-2 text-xs font-bold text-[#071326] leading-snug">{unit.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+            </div>
+
             {/* STEP 1: CHOOSE RENTAL ITEMS */}
-            <div className="bg-white border border-[#E8ECF1] rounded-xl p-5 sm:p-7 shadow-xs">
+            <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
               <div className="flex items-center justify-between mb-5 pb-3 border-b border-[#F1F5F9]">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
@@ -457,13 +584,24 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        {/* Compact Image Placeholder */}
-                        <div className="relative w-20 h-16 rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 shrink-0">
-                          <span className="text-[8px] font-bold text-[#64748B] uppercase leading-tight line-clamp-2">
-                            [ {item.placeholderLabel} ]
-                          </span>
-                          <SlotImage image={imageForItem(item.id)} />
-                        </div>
+                        {/* Compact photo; items without one yet show their category icon, like the Rentals page. */}
+                        {item.image || item.category === 'packages' ? (
+                          <div className="relative w-20 h-16 rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 shrink-0">
+                            <span className="text-[8px] font-bold text-[#64748B] uppercase leading-tight line-clamp-2">
+                              [ {item.placeholderLabel} ]
+                            </span>
+                            <SlotImage image={item.image ?? imageForItem(item.id)} />
+                          </div>
+                        ) : (
+                          (() => {
+                            const Icon = CATEGORY_ICONS[item.category] ?? Sparkles;
+                            return (
+                              <div className="w-20 h-16 rounded-[8px] party-banner border border-[#D3DDE9] flex items-center justify-center text-[#087BF5] shrink-0">
+                                <Icon className="w-7 h-7 stroke-[1.6]" />
+                              </div>
+                            );
+                          })()
+                        )}
 
                         <div>
                           <div className="flex items-center gap-2">
@@ -476,7 +614,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           </p>
                           <div className="mt-2 flex items-center gap-2">
                             <span className="text-sm font-black text-[#087BF5]">
-                              ${item.price}
+                              {money(item.price, item.priceFrom)}
                             </span>
                             <span className="text-xs text-[#94A3B8]">
                               / {item.unit}
@@ -513,7 +651,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           <button
                             type="button"
                             onClick={() => handleAddItem(item)}
-                            className="w-full sm:w-auto px-4 py-2 bg-white border border-[#CBD5E1] hover:border-[#087BF5] hover:text-[#087BF5] text-[#071326] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
+                            className="w-full sm:w-auto whitespace-nowrap px-4 py-2 bg-white border border-[#CBD5E1] hover:border-[#087BF5] hover:text-[#087BF5] text-[#071326] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
                           >
                             <Plus className="w-3.5 h-3.5 text-[#087BF5]" />
                             <span>Add to Quote</span>
@@ -527,7 +665,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
             </div>
 
             {/* STEP 2: EVENT & DELIVERY DETAILS */}
-            <div className="bg-white border border-[#E8ECF1] rounded-xl p-5 sm:p-7 shadow-xs">
+            <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
               <div className="mb-5 pb-3 border-b border-[#F1F5F9]">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
                   Step 2
@@ -647,7 +785,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, surfaceType: 'concrete' })}
                         className="text-[#087BF5]"
                       />
-                      <span>Concrete / Driveway (Sandbags +$25)</span>
+                      <span>Concrete / Driveway (Sandbags +$XXX)</span>
                     </label>
 
                     <label className={`flex items-center gap-3 p-2.5 border rounded-lg cursor-pointer text-xs font-semibold transition-colors ${
@@ -660,7 +798,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, surfaceType: 'indoor' })}
                         className="text-[#087BF5]"
                       />
-                      <span>Indoors / Gym (Sandbags +$25)</span>
+                      <span>Indoors / Gym (Sandbags +$XXX)</span>
                     </label>
                   </div>
                 </div>
@@ -693,7 +831,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, duration: 'overnight' })}
                         className="text-[#087BF5]"
                       />
-                      <span>Keep Overnight (Pickup next morning +$50)</span>
+                      <span>Keep Overnight (Pickup next morning +$XXX)</span>
                     </label>
 
                     <label className={`flex items-center gap-3 p-2.5 border rounded-lg cursor-pointer text-xs font-semibold transition-colors ${
@@ -706,7 +844,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, duration: 'weekend' })}
                         className="text-[#087BF5]"
                       />
-                      <span>2-Day Weekend Bundle (+50% Rate)</span>
+                      <span>2-Day Weekend (+$XXX)</span>
                     </label>
                   </div>
                 </div>
@@ -714,7 +852,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
             </div>
 
             {/* STEP 3: CUSTOMER & DELIVERY ADDRESS */}
-            <div className="bg-white border border-[#E8ECF1] rounded-xl p-5 sm:p-7 shadow-xs">
+            <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
               <div className="mb-5 pb-3 border-b border-[#F1F5F9]">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
                   Step 3
@@ -863,14 +1001,19 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         <span className="font-bold text-[#071326] block leading-snug">
                           {cartItem.item.name}
                         </span>
+                        {cartItem.item.category === 'packages' && (
+                          <span className={`block text-xs font-semibold ${cartItem.choice ? 'text-[#087BF5]' : 'text-[#C2410C]'}`}>
+                            {cartItem.choice ? `With: ${cartItem.choice}` : 'Pick your unit above'}
+                          </span>
+                        )}
                         <span className="text-[#64748B] text-xs">
-                          {cartItem.quantity} &times; ${cartItem.item.price}
+                          {cartItem.quantity} &times; {money(cartItem.item.price, cartItem.item.priceFrom)}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <span className="font-extrabold text-[#071326]">
-                          ${cartItem.item.price * cartItem.quantity}
+                          {money(lineTotal(cartItem.item.price, cartItem.quantity), cartItem.item.priceFrom)}
                         </span>
                         <button
                           type="button"
@@ -890,27 +1033,27 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
               <div className="border-t border-[#E8ECF1] pt-4 space-y-2.5 text-xs sm:text-sm">
                 <div className="flex justify-between text-[#64748B]">
                   <span>Equipment Subtotal</span>
-                  <span className="font-semibold text-[#071326]">${subtotal}</span>
+                  <span className="font-semibold text-[#071326]">{money(subtotal, subtotalFrom)}</span>
                 </div>
 
                 <div className="flex justify-between text-[#64748B]">
                   <span>Delivery ({details.city})</span>
-                  <span className={`font-semibold ${deliveryFee === 0 ? 'text-emerald-600' : 'text-[#071326]'}`}>
-                    {deliveryFee === 0 ? 'FREE' : `$${deliveryFee}`}
+                  <span className="font-semibold text-[#071326]">
+                    {money(deliveryFee)}
                   </span>
                 </div>
 
-                {surfaceFee > 0 && (
+                {surfaceFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Hard Surface Sandbag Weighting</span>
-                    <span className="font-semibold text-[#071326]">${surfaceFee}</span>
+                    <span className="font-semibold text-[#071326]">{money(surfaceFee)}</span>
                   </div>
                 )}
 
-                {durationFee > 0 && (
+                {durationFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Duration Extension Fee</span>
-                    <span className="font-semibold text-[#071326]">${durationFee}</span>
+                    <span className="font-semibold text-[#071326]">{money(durationFee)}</span>
                   </div>
                 )}
 
@@ -921,11 +1064,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                       Estimated Total
                     </span>
                     <span className="text-[11px] text-[#64748B]">
-                      Includes setup & takedown
+                      Delivery & setup by our team
                     </span>
                   </div>
                   <span className="text-3xl font-black text-[#087BF5]">
-                    ${grandTotal}
+                    {money(grandTotal, subtotalFrom)}
                   </span>
                 </div>
               </div>
@@ -947,7 +1090,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                 </button>
 
                 <p className="text-[11px] text-center text-[#64748B] leading-tight">
-                  No payment charged now. We verify safety space, confirm schedule, and send your booking contract.
+                  No payment charged now. We'll contact you to confirm your date, setup space and final price.
                 </p>
               </div>
 
@@ -960,7 +1103,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                   href="tel:8632804175"
                   className="font-bold text-sm text-[#087BF5] hover:underline"
                 >
-                  863-280-4175 &bull; Mon–Sun 8am–8pm
+                  863-280-4175 &bull; 321-522-9690
                 </a>
               </div>
             </div>
