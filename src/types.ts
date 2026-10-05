@@ -13,8 +13,10 @@ export interface BookableItem {
   name: string;
   /** A Rentals page section id (e.g. 'bounce-houses') or 'packages'. */
   category: string;
-  /** 0 means the price is quoted by phone. */
-  price: number;
+  /** null = not confirmed yet; shown as $XXX. */
+  price: number | null;
+  /** The price is a "starting at" price. */
+  priceFrom?: boolean;
   unit: string;
   placeholderLabel: string;
   description: string;
@@ -44,11 +46,13 @@ export interface BookingConfirmation {
   referenceNumber: string;
   customerDetails: BookingDetails;
   items: SelectedCartItem[];
-  subtotal: number;
-  deliveryFee: number;
-  surfaceFee: number;
-  durationFee: number;
-  total: number;
+  /** null = includes a price that isn't confirmed yet ($XXX). */
+  subtotal: number | null;
+  subtotalFrom: boolean;
+  deliveryFee: number | null;
+  surfaceFee: number | null;
+  durationFee: number | null;
+  total: number | null;
   dateCreated: string;
 }
 

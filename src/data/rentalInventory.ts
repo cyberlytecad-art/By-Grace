@@ -34,7 +34,7 @@ export const RENTAL_INVENTORY: InventorySection[] = [
       {
         id: 'blue-palm-18ft-slide',
         name: '18ft Blue Palm Water Slide',
-        description: 'Our 18 foot tropical slide with palm trees up top and a big splash pool at the bottom.',
+        description: 'Our 18ft tropical slide with palm trees up top and a splash pool at the bottom. Full-day rental.',
         image: photo('blue-palm-18ft-slide', '18 foot blue tropical water slide with palm trees'),
       },
       {
@@ -46,7 +46,7 @@ export const RENTAL_INVENTORY: InventorySection[] = [
       {
         id: 'teal-wave-slide',
         name: 'Teal Wave Water Slide',
-        description: 'Ocean wave themed slide with a long curved landing pool. A crowd favorite for summer parties.',
+        description: 'Ocean wave themed slide with a palm tree and a long landing pool.',
         image: photo('teal-wave-slide', 'Teal wave themed water slide with splash pool'),
       },
     ],
@@ -71,7 +71,7 @@ export const RENTAL_INVENTORY: InventorySection[] = [
       {
         id: 'white-red-castle-bounce',
         name: 'White & Red Castle Bounce House',
-        description: 'Marble white castle with red trim, great for weddings, showers and elegant parties.',
+        description: 'Marble white castle with red trim and red and blue turrets.',
         image: photo('white-red-castle-bounce', 'White and red castle bounce house'),
       },
       {
@@ -91,12 +91,12 @@ export const RENTAL_INVENTORY: InventorySection[] = [
   {
     id: 'combos',
     name: 'Combos',
-    blurb: 'Bounce house and slide in one. Use them wet with the pool or dry all year long.',
+    blurb: 'Bounce house and slide in one unit for nonstop jumping and sliding.',
     items: [
       {
         id: 'marble-castle-combo',
         name: 'Marble Castle Wet/Dry Combo',
-        description: 'Bounce area, climb-up slide and splash pool in one unit. Runs wet or dry.',
+        description: 'Bounce area, slide and splash pool in one unit.',
         image: photo('marble-castle-combo', 'Marble castle combo bounce house with slide and pool'),
       },
       {
@@ -110,12 +110,12 @@ export const RENTAL_INVENTORY: InventorySection[] = [
   {
     id: 'tents',
     name: 'Tents',
-    blurb: 'Shade and rain cover for any crowd size, set up by our team.',
+    blurb: 'Shade for your guests, delivered and set up by our team.',
     items: [
       {
         id: 'white-party-tent',
         name: 'White Party Tent with Sidewalls',
-        description: 'Frame tent with window sidewalls for a clean, finished look in any weather.',
+        description: 'Frame tent with window sidewalls for a clean, finished look.',
         image: photo('white-party-tent', 'White party tent with window sidewalls'),
       },
       {
@@ -196,7 +196,7 @@ export const RENTAL_INVENTORY: InventorySection[] = [
       {
         id: 'dj-service',
         name: 'DJ Service',
-        description: 'Music and a DJ to keep the party going. Ask us about adding one to your booking.',
+        description: 'Professional DJ service to keep the party going. Ask us about adding it to your booking.',
         image: photo('dj-service', 'DJ table with speakers and party lights under a tent at night'),
       },
     ],

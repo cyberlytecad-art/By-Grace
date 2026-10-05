@@ -30,20 +30,8 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
     }
   }, [initialCategory]);
 
-  const serviceCities = [
-    'Haines City',
-    'Lakeland',
-    'Davenport',
-    'Dundee',
-    'Kissimmee',
-    'Orlando',
-    'Winter Haven',
-    'St. Cloud',
-    'Dr. Phillips',
-    'Poinciana',
-    'Auburndale',
-    'Lake Wales',
-  ];
+  // Cities By Grace names on Instagram.
+  const serviceCities = ['Haines City', 'Davenport', 'Kissimmee', 'Orlando'];
 
   const validate = () => {
     const newErrors: Partial<Record<keyof QuoteFormData, string>> = {};
@@ -123,8 +111,8 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
               </h2>
 
               <p className="text-base text-[#475569] leading-relaxed mb-5">
-                We proudly serve Haines City, Lakeland, Davenport, Dundee,
-                Kissimmee, Orlando, Winter Haven, St. Cloud, Dr. Phillips and more!
+                We proudly serve Haines City, Davenport, Kissimmee, Orlando
+                and communities across Central Florida!
               </p>
 
               {/* Service City Badges */}
@@ -149,7 +137,7 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
               <div>
                 <h4 className="text-sm font-bold text-[#071326]">Cleaned & Sanitized Before Every Event</h4>
                 <p className="text-xs text-[#64748B] mt-1 leading-normal">
-                  Your children's health and safety are our highest priorities. All inflatables, tents, and party furniture are thoroughly disinfected and inspected prior to delivery.
+                  Your children's health and safety are our highest priorities. Every bounce house, water slide, tent, table and chair is cleaned and sanitized before it goes out.
                 </p>
               </div>
             </div>
@@ -224,8 +212,8 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
                       Business Hours
                     </span>
                     <p className="text-sm text-[#475569] mt-0.5 leading-snug">
-                      Mon – Sun<br />
-                      <span className="text-xs text-[#64748B]">8:00 AM – 8:00 PM</span>
+                      XXX<br />
+                      <span className="text-xs text-[#64748B]">XXX – XXX</span>
                     </p>
                   </div>
                 </div>

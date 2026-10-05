@@ -124,7 +124,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
                   <Clock className="w-3.5 h-3.5" />
                 </div>
                 <div className="text-xs sm:text-sm text-[#475569]">
-                  Mon – Sun: 8:00 AM – 8:00 PM
+                  Hours: XXX
                 </div>
               </div>
             </div>

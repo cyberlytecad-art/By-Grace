@@ -39,9 +39,9 @@ export const RENTAL_IMAGES: Record<string, SiteImage> = {
 };
 
 export const PACKAGE_IMAGES: Record<string, SiteImage> = {
-  'pkg-01': { src: `${IMG}packages/package-01.jpg`, alt: 'Backyard birthday bundle' },
-  'pkg-02': { src: `${IMG}packages/package-02.jpg`, alt: 'Summer splash combo bundle' },
-  'pkg-03': { src: `${IMG}packages/package-03.jpg`, alt: 'Community celebration setup' },
+  'pkg-01': { src: `${IMG}packages/package-01.jpg`, alt: 'Bounce house package' },
+  'pkg-02': { src: `${IMG}rentals/water-slides.jpg`, alt: 'Water slide package' },
+  'pkg-03': { src: `${IMG}rentals/combos.jpg`, alt: 'Bounce house and slide combo package' },
 };
 
 /** Picks the best photo for a bookable item in the estimator (by its id prefix). */

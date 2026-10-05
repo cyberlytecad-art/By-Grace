@@ -49,7 +49,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
     {
       id: 'packages',
       title: 'Packages',
-      desc: 'Save with our bundles.',
+      desc: 'Bounce house, slide & combo bundles.',
       icon: Package,
       iconColor: 'text-[#8B5CF6]',
       iconBg: 'bg-purple-50',
@@ -184,7 +184,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               Planning a Birthday, School Event, or Church Gathering?
             </h2>
             <p className="text-sm text-[#64748B]">
-              We deliver, set up, and inspect every inflatable, tent, and table so your event runs seamlessly.
+              We deliver, set up and clean every bounce house, water slide, tent and table so your event runs smoothly.
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">

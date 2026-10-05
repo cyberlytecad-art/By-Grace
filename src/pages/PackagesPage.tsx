@@ -9,48 +9,35 @@ interface PackagesPageProps {
 }
 
 export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
+  // The three bundles from By Grace's "Especiales de Pascua" (Easter) flyer on Instagram.
+  const sharedExtras = ['12 Chairs', '2 Tables', '10x10 Tent'];
   const packages = [
     {
       id: 'pkg-01',
       code: 'PACKAGE 01',
-      name: 'Backyard Birthday Bundle',
+      name: 'Bounce House Package',
       placeholderLabel: 'REPLACE WITH PACKAGE 01 IMAGE',
-      description: 'Ideal for home birthdays and family gatherings. Includes a commercial bounce house, tables, and chairs.',
-      details: [
-        'Choice of Standard Themed Bounce House (15x15)',
-        '2 Commercial 6ft Folding Tables',
-        '12 White Folding Chairs',
-        'Complete Delivery, Setup & Takedown',
-      ],
-      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
+      description: 'A 15x15 bounce house with seating and shade for a backyard birthday or family party.',
+      details: ['15x15 Bounce House', ...sharedExtras],
+      price: '$225',
     },
     {
       id: 'pkg-02',
       code: 'PACKAGE 02',
-      name: 'Summer Splash Combo Bundle',
+      name: 'Water Slide Package',
       placeholderLabel: 'REPLACE WITH PACKAGE 02 IMAGE',
-      description: 'Our most popular Florida summer package. Beat the heat with an inflatable water slide and heavy-duty shade tent.',
-      details: [
-        'Commercial Water Slide or Wet/Dry Combo',
-        '10x20 Commercial Canopy / Event Tent',
-        '3 Commercial Folding Tables + 18 Chairs',
-        'Commercial Hose & Anchor Setup Included',
-      ],
-      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
+      description: 'A water slide with seating and shade to keep everyone cool on a hot Florida day.',
+      details: ['Water Slide', ...sharedExtras],
+      price: '$380',
     },
     {
       id: 'pkg-03',
       code: 'PACKAGE 03',
-      name: 'Ultimate Community Celebration',
+      name: 'Combo Package',
       placeholderLabel: 'REPLACE WITH PACKAGE 03 IMAGE',
-      description: 'The complete package for school festivals, church events, corporate picnics, and neighborhood block parties.',
-      details: [
-        'Large Inflatable Water Slide or Multi-Play Combo',
-        '20x20 High Peak Event Tent',
-        '4 Tables + 24 Chairs',
-        'Popcorn or Cotton Candy Machine with Supplies',
-      ],
-      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
+      description: 'A bounce house and slide combo with seating and shade, so kids can jump and slide all day.',
+      details: ['Bounce House & Slide Combo', ...sharedExtras],
+      price: '$300',
     },
   ];
 
@@ -71,8 +58,8 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
           {/* Supporting paragraph */}
           <p className="text-base sm:text-[17px] text-[#64748B] max-w-[800px] leading-relaxed">
-            Bundle your bounce houses, water slides, tents, tables, and chairs to get the best value for your event.
-            All packages include delivery, sanitization, professional setup, and takedown in Haines City and Central Florida.
+            Pick a bounce house, water slide or combo and get chairs, tables and a tent with it.
+            We deliver and set everything up in Haines City and across Central Florida.
           </p>
         </div>
 
@@ -132,9 +119,8 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
                   {/* Price / Details Placeholder */}
                   <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg p-3 text-center mb-6">
-                    <p className="text-[11px] font-bold text-[#64748B] tracking-wider uppercase">
-                      {pkg.pricePlaceholder}
-                    </p>
+                    <p className="text-2xl font-black text-[#087BF5] leading-none">{pkg.price}</p>
+                    <p className="text-[11px] font-semibold text-[#64748B] mt-1">Easter special price</p>
                   </div>
                 </div>
 

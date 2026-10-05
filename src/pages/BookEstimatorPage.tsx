@@ -25,8 +25,14 @@ import { SlotImage } from '../components/SlotImage';
 import { imageForItem } from '../data/siteImages';
 import { RENTAL_INVENTORY } from '../data/rentalInventory';
 
-/** Shows "Quote" instead of $0 for items priced by phone. */
-const money = (n: number) => (n > 0 ? `$${n}` : 'Quote');
+/** Prices By Grace hasn't confirmed are null and show as an obvious $XXX placeholder. */
+const money = (n: number | null, from = false) => (n === null ? '$XXX' : `${from ? 'From ' : ''}$${n}`);
+
+const lineTotal = (price: number | null, qty: number) => (price === null ? null : price * qty);
+
+/** Adds amounts, but any unconfirmed (null) part makes the whole sum unconfirmed. */
+const sumKnown = (parts: (number | null)[]) =>
+  parts.some((p) => p === null) ? null : parts.reduce<number>((a, p) => a + (p as number), 0);
 
 const INFLATABLE_CATEGORIES = ['water-slides', 'bounce-houses', 'combos'];
 
@@ -89,7 +95,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     startTime: '11:00 AM',
     endTime: '07:00 PM',
     streetAddress: '',
-    city: 'Haines City (Local)',
+    city: 'Haines City',
     surfaceType: 'grass',
     duration: 'single-day',
     notes: '',
@@ -135,27 +141,23 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     return DELIVERY_CITIES.find((c) => c.name === details.city) || DELIVERY_CITIES[0];
   }, [details.city]);
 
-  const subtotal = useMemo(() => {
-    return cart.reduce((acc, c) => acc + c.item.price * c.quantity, 0);
-  }, [cart]);
+  const subtotal = useMemo(() => sumKnown(cart.map((c) => lineTotal(c.item.price, c.quantity))), [cart]);
+  const subtotalFrom = cart.some((c) => c.item.priceFrom);
 
-  const deliveryFee = selectedCityObj ? selectedCityObj.fee : 0;
+  const deliveryFee = selectedCityObj ? selectedCityObj.fee : null;
 
+  // Extra charges for hard surfaces and longer rentals aren't confirmed yet, so they show as $XXX.
   const surfaceFee = useMemo(() => {
     if (details.surfaceType === 'concrete' || details.surfaceType === 'indoor') {
       const inflatablesCount = cart.filter(c => INFLATABLE_CATEGORIES.includes(c.item.category)).reduce((sum, c) => sum + c.quantity, 0);
-      return inflatablesCount > 0 ? 25 : 0;
+      return inflatablesCount > 0 ? null : 0;
     }
     return 0;
   }, [details.surfaceType, cart]);
 
-  const durationFee = useMemo(() => {
-    if (details.duration === 'overnight') return 50;
-    if (details.duration === 'weekend') return Math.round(subtotal * 0.5); // 50% discount for 2nd day
-    return 0;
-  }, [details.duration, subtotal]);
+  const durationFee = details.duration === 'single-day' ? 0 : null;
 
-  const grandTotal = subtotal + deliveryFee + surfaceFee + durationFee;
+  const grandTotal = sumKnown([subtotal, deliveryFee, surfaceFee, durationFee]);
 
   // Validation
   const validateForm = () => {
@@ -187,6 +189,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
       customerDetails: { ...details },
       items: [...cart],
       subtotal,
+      subtotalFrom,
       deliveryFee,
       surfaceFee,
       durationFee,
@@ -298,11 +301,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                     <div>
                       <span className="font-bold text-[#071326]">{cartItem.item.name}</span>
                       <span className="text-xs text-[#64748B] block mt-0.5">
-                        Qty: {cartItem.quantity} &times; {money(cartItem.item.price)}{cartItem.item.price > 0 ? ` per ${cartItem.item.unit}` : ''}
+                        Qty: {cartItem.quantity} &times; {money(cartItem.item.price, cartItem.item.priceFrom)} per {cartItem.item.unit}
                       </span>
                     </div>
                     <span className="font-bold text-[#071326]">
-                      {money(cartItem.item.price * cartItem.quantity)}
+                      {money(lineTotal(cartItem.item.price, cartItem.quantity), cartItem.item.priceFrom)}
                     </span>
                   </div>
                 ))}
@@ -312,27 +315,27 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
               <div className="bg-[#F8FAFC] p-4 border-t border-[#E8ECF1] space-y-2 text-sm">
                 <div className="flex justify-between text-[#64748B]">
                   <span>Equipment Subtotal</span>
-                  <span>${confirmation.subtotal}</span>
+                  <span>{money(confirmation.subtotal, confirmation.subtotalFrom)}</span>
                 </div>
                 <div className="flex justify-between text-[#64748B]">
                   <span>Delivery ({confirmation.customerDetails.city})</span>
-                  <span>{confirmation.deliveryFee === 0 ? 'FREE' : `$${confirmation.deliveryFee}`}</span>
+                  <span>{money(confirmation.deliveryFee)}</span>
                 </div>
-                {confirmation.surfaceFee > 0 && (
+                {confirmation.surfaceFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Hard Surface Sandbag Weighting</span>
-                    <span>${confirmation.surfaceFee}</span>
+                    <span>{money(confirmation.surfaceFee)}</span>
                   </div>
                 )}
-                {confirmation.durationFee > 0 && (
+                {confirmation.durationFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Duration Extension Fee</span>
-                    <span>${confirmation.durationFee}</span>
+                    <span>{money(confirmation.durationFee)}</span>
                   </div>
                 )}
                 <div className="flex justify-between items-center text-lg sm:text-xl font-black text-[#071326] pt-3 border-t border-[#E8ECF1]">
                   <span>Estimated Total</span>
-                  <span className="text-[#087BF5]">${confirmation.total}</span>
+                  <span className="text-[#087BF5]">{money(confirmation.total, confirmation.subtotalFrom)}</span>
                 </div>
               </div>
             </div>
@@ -502,13 +505,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           </p>
                           <div className="mt-2 flex items-center gap-2">
                             <span className="text-sm font-black text-[#087BF5]">
-                              {item.price > 0 ? `$${item.price}` : 'Call for price'}
+                              {money(item.price, item.priceFrom)}
                             </span>
-                            {item.price > 0 && (
-                              <span className="text-xs text-[#94A3B8]">
-                                / {item.unit}
-                              </span>
-                            )}
+                            <span className="text-xs text-[#94A3B8]">
+                              / {item.unit}
+                            </span>
                           </div>
                         </div>
                       </div>
@@ -675,7 +676,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, surfaceType: 'concrete' })}
                         className="text-[#087BF5]"
                       />
-                      <span>Concrete / Driveway (Sandbags +$25)</span>
+                      <span>Concrete / Driveway (Sandbags +$XXX)</span>
                     </label>
 
                     <label className={`flex items-center gap-3 p-2.5 border rounded-lg cursor-pointer text-xs font-semibold transition-colors ${
@@ -688,7 +689,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, surfaceType: 'indoor' })}
                         className="text-[#087BF5]"
                       />
-                      <span>Indoors / Gym (Sandbags +$25)</span>
+                      <span>Indoors / Gym (Sandbags +$XXX)</span>
                     </label>
                   </div>
                 </div>
@@ -721,7 +722,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, duration: 'overnight' })}
                         className="text-[#087BF5]"
                       />
-                      <span>Keep Overnight (Pickup next morning +$50)</span>
+                      <span>Keep Overnight (Pickup next morning +$XXX)</span>
                     </label>
 
                     <label className={`flex items-center gap-3 p-2.5 border rounded-lg cursor-pointer text-xs font-semibold transition-colors ${
@@ -734,7 +735,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         onChange={() => setDetails({ ...details, duration: 'weekend' })}
                         className="text-[#087BF5]"
                       />
-                      <span>2-Day Weekend Bundle (+50% Rate)</span>
+                      <span>2-Day Weekend (+$XXX)</span>
                     </label>
                   </div>
                 </div>
@@ -892,13 +893,13 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           {cartItem.item.name}
                         </span>
                         <span className="text-[#64748B] text-xs">
-                          {cartItem.quantity} &times; {money(cartItem.item.price)}
+                          {cartItem.quantity} &times; {money(cartItem.item.price, cartItem.item.priceFrom)}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <span className="font-extrabold text-[#071326]">
-                          {money(cartItem.item.price * cartItem.quantity)}
+                          {money(lineTotal(cartItem.item.price, cartItem.quantity), cartItem.item.priceFrom)}
                         </span>
                         <button
                           type="button"
@@ -918,27 +919,27 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
               <div className="border-t border-[#E8ECF1] pt-4 space-y-2.5 text-xs sm:text-sm">
                 <div className="flex justify-between text-[#64748B]">
                   <span>Equipment Subtotal</span>
-                  <span className="font-semibold text-[#071326]">${subtotal}</span>
+                  <span className="font-semibold text-[#071326]">{money(subtotal, subtotalFrom)}</span>
                 </div>
 
                 <div className="flex justify-between text-[#64748B]">
                   <span>Delivery ({details.city})</span>
-                  <span className={`font-semibold ${deliveryFee === 0 ? 'text-emerald-600' : 'text-[#071326]'}`}>
-                    {deliveryFee === 0 ? 'FREE' : `$${deliveryFee}`}
+                  <span className="font-semibold text-[#071326]">
+                    {money(deliveryFee)}
                   </span>
                 </div>
 
-                {surfaceFee > 0 && (
+                {surfaceFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Hard Surface Sandbag Weighting</span>
-                    <span className="font-semibold text-[#071326]">${surfaceFee}</span>
+                    <span className="font-semibold text-[#071326]">{money(surfaceFee)}</span>
                   </div>
                 )}
 
-                {durationFee > 0 && (
+                {durationFee !== 0 && (
                   <div className="flex justify-between text-[#64748B]">
                     <span>Duration Extension Fee</span>
-                    <span className="font-semibold text-[#071326]">${durationFee}</span>
+                    <span className="font-semibold text-[#071326]">{money(durationFee)}</span>
                   </div>
                 )}
 
@@ -949,11 +950,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                       Estimated Total
                     </span>
                     <span className="text-[11px] text-[#64748B]">
-                      Includes setup & takedown
+                      Delivery & setup by our team
                     </span>
                   </div>
                   <span className="text-3xl font-black text-[#087BF5]">
-                    ${grandTotal}
+                    {money(grandTotal, subtotalFrom)}
                   </span>
                 </div>
               </div>
@@ -975,7 +976,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                 </button>
 
                 <p className="text-[11px] text-center text-[#64748B] leading-tight">
-                  No payment charged now. We verify safety space, confirm schedule, and send your booking contract.
+                  No payment charged now. We'll contact you to confirm your date, setup space and final price.
                 </p>
               </div>
 
@@ -988,7 +989,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                   href="tel:8632804175"
                   className="font-bold text-sm text-[#087BF5] hover:underline"
                 >
-                  863-280-4175 &bull; Mon–Sun 8am–8pm
+                  863-280-4175 &bull; 321-522-9690
                 </a>
               </div>
             </div>
