@@ -26,6 +26,8 @@ export interface BookableItem {
 export interface SelectedCartItem {
   item: BookableItem;
   quantity: number;
+  /** For a deal: the specific slide, bounce house or combo the customer picked. */
+  choice?: string;
 }
 
 export interface BookingDetails {

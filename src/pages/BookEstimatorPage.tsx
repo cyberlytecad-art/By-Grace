@@ -119,6 +119,22 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     });
   };
 
+  // Each deal includes one main unit, and the customer picks which one.
+  const DEAL_UNIT_SECTION: Record<string, string> = {
+    'pkg-bundle-01': 'bounce-houses',
+    'pkg-bundle-02': 'water-slides',
+    'pkg-bundle-03': 'combos',
+  };
+  const chosenDeal = cart.find((c) => c.item.category === 'packages');
+  const dealUnitSection = chosenDeal
+    ? RENTAL_INVENTORY.find((sec) => sec.id === DEAL_UNIT_SECTION[chosenDeal.item.id])
+    : undefined;
+  const handlePickDealUnit = (unitName: string) => {
+    setCart((prev) =>
+      prev.map((c) => (c.item.category === 'packages' ? { ...c, choice: unitName } : c))
+    );
+  };
+
   const handleAddItem = (item: BookableItem) => {
     setCart((prev) => {
       const existing = prev.find((c) => c.item.id === item.id);
@@ -172,6 +188,9 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   const validateForm = () => {
     const errors: Record<string, string> = {};
     if (cart.length === 0) errors.cart = 'Please add at least one rental item to estimate & book.';
+    if (dealUnitSection && !chosenDeal?.choice) {
+      errors.cart = `Please pick which ${dealUnitSection.name.toLowerCase().replace(/s$/, '')} you want with your deal.`;
+    }
     if (!details.fullName.trim()) errors.fullName = 'Full Name is required.';
     if (!details.phone.trim()) errors.phone = 'Phone number is required.';
     if (!details.email.trim() || !/\S+@\S+\.\S+/.test(details.email)) {
@@ -309,6 +328,9 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                   <div key={cartItem.item.id} className="p-4 flex items-center justify-between text-sm">
                     <div>
                       <span className="font-bold text-[#071326]">{cartItem.item.name}</span>
+                      {cartItem.choice && (
+                        <span className="text-xs font-semibold text-[#087BF5] block mt-0.5">With: {cartItem.choice}</span>
+                      )}
                       <span className="text-xs text-[#64748B] block mt-0.5">
                         Qty: {cartItem.quantity} &times; {money(cartItem.item.price, cartItem.item.priceFrom)} per {cartItem.item.unit}
                       </span>
@@ -467,6 +489,43 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                   );
                 })}
               </div>
+              {chosenDeal && dealUnitSection && (
+                <div className="mt-4 bg-white rounded-2xl p-4 sm:p-5 shadow-lg">
+                  <p className="font-extrabold text-sm sm:text-base text-[#071326]">
+                    Which {dealUnitSection.name.toLowerCase().replace(/s$/, '')} do you want?
+                  </p>
+                  <p className="text-xs text-[#64748B] mt-0.5 mb-3">
+                    Your {chosenDeal.item.name.toLowerCase()} comes with one. Tap to pick.
+                  </p>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                    {dealUnitSection.items.map((unit) => {
+                      const picked = chosenDeal.choice === unit.name;
+                      return (
+                        <button
+                          key={unit.id}
+                          type="button"
+                          onClick={() => handlePickDealUnit(unit.name)}
+                          aria-pressed={picked}
+                          className={`relative text-left rounded-xl overflow-hidden border-2 transition-all ${
+                            picked ? 'border-[#087BF5] shadow-md' : 'border-[#E2E8F0] hover:border-[#93C5FD]'
+                          }`}
+                        >
+                          <div className="relative w-full aspect-[4/3] bg-[#E9EDF2]">
+                            {unit.image && <SlotImage image={unit.image} />}
+                            {picked && (
+                              <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-[#087BF5] text-white text-xs font-bold flex items-center justify-center shadow">
+                                ✓
+                              </span>
+                            )}
+                          </div>
+                          <span className="block px-2.5 py-2 text-xs font-bold text-[#071326] leading-snug">{unit.name}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
               <p className="text-[11px] text-white/85 mt-3">Deal prices are from our Easter specials.</p>
             </div>
 
@@ -943,6 +1002,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                         <span className="font-bold text-[#071326] block leading-snug">
                           {cartItem.item.name}
                         </span>
+                        {cartItem.item.category === 'packages' && (
+                          <span className={`block text-xs font-semibold ${cartItem.choice ? 'text-[#087BF5]' : 'text-[#C2410C]'}`}>
+                            {cartItem.choice ? `With: ${cartItem.choice}` : 'Pick your unit above'}
+                          </span>
+                        )}
                         <span className="text-[#64748B] text-xs">
                           {cartItem.quantity} &times; {money(cartItem.item.price, cartItem.item.priceFrom)}
                         </span>
