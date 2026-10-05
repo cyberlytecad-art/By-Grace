@@ -11,34 +11,37 @@
  *  - logo: 512x512 square (PNG with transparency works best)
  */
 
+/** Respects Vite's base path so photos also load when the site is served from a subfolder. */
+const IMG = `${import.meta.env.BASE_URL}images/`;
+
 export interface SiteImage {
   src: string;
   alt: string;
 }
 
 export const LOGO: SiteImage = {
-  src: '/images/logo.png',
+  src: `${IMG}logo.png`,
   alt: 'By Grace Party Rentals logo',
 };
 
 export const HERO: SiteImage = {
-  src: '/images/hero.jpg',
-  alt: 'Water slide, bounce house and party tent set up in a Central Florida backyard',
+  src: `${IMG}hero.jpg`,
+  alt: 'Tropical water slide set up in a Central Florida backyard under a rainbow',
 };
 
 export const RENTAL_IMAGES: Record<string, SiteImage> = {
-  'water-slides': { src: '/images/rentals/water-slides.jpg', alt: 'Inflatable water slide' },
-  'bounce-houses': { src: '/images/rentals/bounce-houses.jpg', alt: 'Bounce house' },
-  combos: { src: '/images/rentals/combos.jpg', alt: 'Bounce house and slide combo' },
-  tents: { src: '/images/rentals/tents.jpg', alt: 'Event tent' },
-  'tables-chairs': { src: '/images/rentals/tables-chairs.jpg', alt: 'Tables and chairs set up for a party' },
-  concessions: { src: '/images/rentals/concessions.jpg', alt: 'Popcorn and cotton candy machines' },
+  'water-slides': { src: `${IMG}rentals/water-slides.jpg`, alt: 'Inflatable water slide' },
+  'bounce-houses': { src: `${IMG}rentals/bounce-houses.jpg`, alt: 'Bounce house' },
+  combos: { src: `${IMG}rentals/combos.jpg`, alt: 'Bounce house and slide combo' },
+  tents: { src: `${IMG}rentals/tents.jpg`, alt: 'Event tent' },
+  'tables-chairs': { src: `${IMG}rentals/tables-chairs.jpg`, alt: 'Tables and chairs set up for a party' },
+  concessions: { src: `${IMG}rentals/concessions.jpg`, alt: 'Popcorn and cotton candy machines' },
 };
 
 export const PACKAGE_IMAGES: Record<string, SiteImage> = {
-  'pkg-01': { src: '/images/packages/package-01.jpg', alt: 'Backyard birthday bundle' },
-  'pkg-02': { src: '/images/packages/package-02.jpg', alt: 'Summer splash combo bundle' },
-  'pkg-03': { src: '/images/packages/package-03.jpg', alt: 'Community celebration setup' },
+  'pkg-01': { src: `${IMG}packages/package-01.jpg`, alt: 'Backyard birthday bundle' },
+  'pkg-02': { src: `${IMG}packages/package-02.jpg`, alt: 'Summer splash combo bundle' },
+  'pkg-03': { src: `${IMG}packages/package-03.jpg`, alt: 'Community celebration setup' },
 };
 
 /** Picks the best photo for a bookable item in the estimator (by its id prefix). */
