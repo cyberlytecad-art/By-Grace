@@ -386,7 +386,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   return (
     <div className="w-full lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
       {/* Top Header Bar */}
-      <div className="party-band shrink-0 py-4 sm:py-5 px-4 sm:px-6 shadow-lg shadow-[#6D28D9]/20">
+      <div className="night-band shrink-0 py-4 sm:py-5 px-4 sm:px-6 shadow-lg shadow-[#0B1430]/20">
         <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">

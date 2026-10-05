@@ -67,7 +67,7 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 xl:gap-20 items-start">
           
           {/* ================= LEFT COLUMN: ABOUT US & SERVICE AREA (~57%) ================= */}
-          <div className="lg:col-span-7 space-y-8 bg-white/85 backdrop-blur-md rounded-[28px] p-6 sm:p-9 shadow-xl shadow-[#071326]/10 border-t-[6px] border-[#EC4899]">
+          <div className="lg:col-span-7 space-y-8 bg-white/85 backdrop-blur-md rounded-[28px] p-6 sm:p-9 shadow-xl shadow-[#071326]/10 border border-white">
             <div>
               {/* Small uppercase blue eyebrow */}
               <p className="text-xs md:text-sm font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-2.5">

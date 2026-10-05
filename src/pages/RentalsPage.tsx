@@ -174,8 +174,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 return (
                   <div
                     key={item.id}
-                    className="flex flex-col bg-white rounded-[16px] border-t-[6px] shadow-xl shadow-[#071326]/15 overflow-hidden transition-all duration-200 hover:shadow-2xl hover:translate-y-[-3px]"
-                    style={{ borderTopColor: accent }}
+                    className="flex flex-col bg-white rounded-[14px] border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 overflow-hidden transition-all duration-200 hover:border-[#087BF5] hover:shadow-xl hover:translate-y-[-2px]"
                   >
                     {item.image ? (
                       <div className="relative w-full aspect-[4/3] bg-[#E9EDF2] image-placeholder">
@@ -195,8 +194,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                           onNavigate('estimator', { preselectedCategory: section.id, preselectedItemId: item.id });
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
-                        className="mt-4 self-start px-5 py-2.5 text-white font-bold text-sm rounded-full flex items-center gap-2 shadow-md transition-all hover:brightness-110 hover:translate-y-[-1px]"
-                        style={{ backgroundColor: accent }}
+                        className="mt-4 self-start px-4 py-2 bg-[#087BF5] hover:bg-[#076edc] text-white font-semibold text-sm rounded-[8px] flex items-center gap-2 transition-colors"
                       >
                         <span>Get a Quote</span>
                         <ArrowRight className="w-4 h-4" />

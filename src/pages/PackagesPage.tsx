@@ -59,13 +59,11 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
           Subtle borders, clean typography, image placeholders.
         */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-          {packages.map((pkg, i) => {
-            const accent = ['#EC4899', '#0EA5E9', '#8B5CF6'][i % 3];
+          {packages.map((pkg) => {
             return (
               <div
                 key={pkg.id}
-                className="bg-white border-t-[6px] shadow-xl shadow-[#071326]/15 hover:shadow-2xl rounded-[20px] p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-3px] group"
-                style={{ borderTopColor: accent }}
+                className="bg-white border border-[#D3DDE9] hover:border-[#087BF5] shadow-lg shadow-[#071326]/10 hover:shadow-xl rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
               >
                 <div>
                   {/* Eyebrow & Package Code */}
@@ -111,7 +109,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
                   {/* Price / Details Placeholder */}
                   <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg p-3 text-center mb-6">
-                    <p className="text-3xl font-black leading-none" style={{ color: accent }}>{pkg.price}</p>
+                    <p className="text-3xl font-black leading-none text-[#087BF5]">{pkg.price}</p>
                     <p className="text-[11px] font-semibold text-[#64748B] mt-1">Easter special price</p>
                   </div>
                 </div>
@@ -122,8 +120,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                     onNavigate('estimator', { preselectedCategory: 'packages', preselectedItemId: pkg.id.replace('pkg-', 'pkg-bundle-') });
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="w-full py-3 text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-md transition-all hover:brightness-110"
-                  style={{ backgroundColor: accent }}
+                  className="w-full py-3 bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white font-bold text-sm rounded-[8px] flex items-center justify-center gap-2 transition-colors"
                 >
                   <span>Choose This Package</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.2]" />
