@@ -44,14 +44,14 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="w-full pb-20">
-      <PageBand eyebrow="PACKAGES" title={<>Party <span className="sun-text">Packages</span></>}>
+      <PageBand eyebrow="PACKAGES" title={<>Party <span className="text-[#087BF5]">Packages</span></>}>
         <p>
           Pick a bounce house, water slide or combo and get chairs, tables and a tent with it.
           We deliver and set everything up in Haines City and across Central Florida.
         </p>
       </PageBand>
 
-      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 -mt-8 sm:-mt-10">
+      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 mt-2">
 
         {/* 
           PACKAGES GRID
@@ -131,7 +131,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Custom Bundling note */}
-        <div className="mt-14 sunny-band shadow-2xl shadow-[#F97316]/30 rounded-[28px] p-7 sm:p-10 text-center max-w-2xl mx-auto">
+        <div className="mt-14 sunny-band plain-band shadow-2xl shadow-[#F97316]/30 rounded-[28px] p-7 sm:p-10 text-center max-w-2xl mx-auto">
           <h4 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">
             Need something different for your event?
           </h4>

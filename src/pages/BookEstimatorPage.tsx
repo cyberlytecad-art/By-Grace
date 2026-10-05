@@ -386,22 +386,22 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   return (
     <div className="w-full lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
       {/* Top Header Bar */}
-      <div className="night-band shrink-0 py-4 sm:py-5 px-4 sm:px-6 shadow-lg shadow-[#0B1430]/20">
+      <div className="shrink-0 pt-5 pb-2 sm:pt-6 px-4 sm:px-6">
         <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
-              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#FDE047]">
+              <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-[#087BF5]">
                 ONLINE BOOKING & ESTIMATE
               </p>
             </div>
-            <h1 className="text-xl sm:text-2xl lg:text-[27px] font-black tracking-tight leading-tight text-white drop-shadow-sm">
-              Book & Price Estimate <span className="sun-text">All at Once</span>
+            <h1 className="text-xl sm:text-2xl lg:text-[27px] font-black tracking-tight leading-tight text-[#071326]">
+              Book & Price Estimate <span className="text-[#087BF5]">All at Once</span>
             </h1>
           </div>
-          <div className="hidden md:flex items-center gap-3 text-xs text-white/85">
+          <div className="hidden md:flex items-center gap-3 text-xs text-[#475569]">
             <span>Haines City & Central FL Delivery</span>
-            <span className="text-white/50">&bull;</span>
-            <a href="tel:8632804175" className="font-bold text-white px-3 py-1.5 rounded-full bg-white/15 border border-white/40 hover:bg-white/25">
+            <span className="text-[#94A3B8]">&bull;</span>
+            <a href="tel:8632804175" className="font-bold text-[#071326] px-3 py-1.5 rounded-full bg-white border border-[#D3DDE9] hover:border-[#087BF5]">
               863-280-4175
             </a>
           </div>
@@ -425,7 +425,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
           >
 
             {/* QUICK PICK: one tap on a deal puts it in the quote */}
-            <div className="sunny-band rounded-[24px] p-5 sm:p-7 shadow-xl shadow-[#F97316]/25">
+            <div className="sunny-band plain-band rounded-[24px] p-5 sm:p-7 shadow-xl shadow-[#F97316]/25">
               <div className="mb-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-white/90">Quick pick</span>
                 <h2 className="text-xl sm:text-2xl font-black text-white drop-shadow-sm">Choose a Deal</h2>

@@ -50,6 +50,12 @@
     background-size: 220px 220px, 100% 100%;
   }
 
+  /* Same warm gradient without the confetti pattern (inner pages) */
+  .sunny-band.plain-band {
+    background-image: linear-gradient(120deg, #F59E0B 0%, #F97316 45%, #EC4899 100%);
+    background-size: 100% 100%;
+  }
+
   /* Deep night-sky footer */
   .night-band {
     background-color: #0B1430;

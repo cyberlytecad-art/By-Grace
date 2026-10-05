@@ -96,14 +96,14 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
 
   return (
     <div className="w-full pb-20">
-      <PageBand eyebrow="RENTALS" title={<>Our <span className="sun-text">Rentals</span></>}>
+      <PageBand eyebrow="RENTALS" title={<>Our <span className="text-[#087BF5]">Rentals</span></>}>
         <p>
           Bounce houses, water slides, tents, tables, chairs, concessions and more. Everything you need
           for an unforgettable event in Haines City and all of Central Florida.
         </p>
       </PageBand>
 
-      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 -mt-8 sm:-mt-10">
+      <div className="relative z-10 max-w-[1250px] mx-auto px-4 sm:px-6 mt-2">
 
         {/* RENTAL GRID: a photo mosaic. Each tile scrolls down to that category's items below. */}
         <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[170px] sm:auto-rows-[210px] lg:auto-rows-[230px] gap-3 sm:gap-4">
