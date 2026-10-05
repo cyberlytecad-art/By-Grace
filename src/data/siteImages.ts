@@ -26,7 +26,7 @@ export const LOGO: SiteImage = {
 
 export const HERO: SiteImage = {
   src: `${IMG}hero.jpg`,
-  alt: 'Water slide, party tent, tables and chairs set up in a backyard',
+  alt: 'Tropical water slide set up in a Central Florida backyard under a rainbow',
 };
 
 export const RENTAL_IMAGES: Record<string, SiteImage> = {
