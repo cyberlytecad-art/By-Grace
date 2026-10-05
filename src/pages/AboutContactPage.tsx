@@ -142,7 +142,7 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
             </div>
 
             {/* Quality Promise Box */}
-            <div className="mt-8 p-5 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl flex items-start gap-3.5">
+            <div className="mt-8 p-5 bg-white border border-[#D3DDE9] shadow-md rounded-xl flex items-start gap-3.5">
               <div className="w-8 h-8 rounded-full bg-blue-100 text-[#087BF5] flex items-center justify-center shrink-0 mt-0.5">
                 <CheckCircle2 className="w-5 h-5" />
               </div>
@@ -159,7 +159,7 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
           <div className="lg:col-span-5">
             <div 
               id="quote-form" 
-              className="bg-white border border-[#E5E9EE] rounded-[12px] p-7 sm:p-9 shadow-xs"
+              className="bg-white border border-[#D3DDE9] rounded-[12px] p-7 sm:p-9 shadow-lg shadow-[#071326]/10"
             >
               {/* Card Header */}
               <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-1.5">

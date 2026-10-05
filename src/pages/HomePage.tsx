@@ -67,7 +67,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
       <section className="relative w-full overflow-hidden">
         {/* Replaceable Hero Background Container */}
         <div 
-          className="hero-placeholder-bg relative w-full h-[620px] sm:h-[660px] lg:h-[720px] flex items-center"
+          className="hero-placeholder-bg relative w-full h-[620px] sm:h-[min(660px,calc(100svh-200px))] lg:h-[min(720px,calc(100svh-200px))] sm:min-h-[500px] flex items-center"
           style={{
             /* 
               USER NOTE: To replace with your actual high-res hero photo:
@@ -161,7 +161,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
                     onNavigate(card.targetPage);
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="cursor-pointer bg-white hover:bg-[#FAFCFF] border border-[#E8ECF1] hover:border-[#CBD5E1] rounded-[10px] p-4.5 sm:p-5 h-[112px] sm:h-[118px] flex flex-col justify-between shadow-xs transition-all hover:translate-y-[-2px] group"
+                  className="cursor-pointer bg-white hover:bg-[#FAFCFF] border border-[#D3DDE9] hover:border-[#087BF5] rounded-[10px] p-4.5 sm:p-5 h-[112px] sm:h-[118px] flex flex-col justify-between shadow-lg shadow-[#071326]/10 transition-all hover:translate-y-[-2px] group"
                 >
                   <div className="flex items-center gap-2.5">
                     <div className={`w-8 h-8 rounded-lg ${card.iconBg} ${card.iconColor} flex items-center justify-center shrink-0`}>
@@ -183,7 +183,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
       {/* Trust & Local Service Highlight Banner */}
       <section className="max-w-[1250px] mx-auto px-4 sm:px-6 mt-16 sm:mt-20">
-        <div className="party-banner border border-white shadow-sm rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="party-banner border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 rounded-xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-1 text-center md:text-left">
             <p className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
               Local & Family-Owned in Haines City, FL

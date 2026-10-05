@@ -115,7 +115,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                   Large rectangular image placeholder
                   Aspect ratio 16:9 / 1.65:1 with subtle 8-10px radius
                 */}
-                <div className="relative w-full aspect-[16/9.8] rounded-[10px] overflow-hidden shadow-md image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-4 transition-all duration-200 group-hover:border-[#087BF5] group-hover:translate-y-[-2px]">
+                <div className="relative w-full aspect-[16/9.8] rounded-[10px] overflow-hidden shadow-lg shadow-[#071326]/15 image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-4 transition-all duration-200 group-hover:border-[#087BF5] group-hover:translate-y-[-2px]">
                   <span className="text-xs sm:text-[13px] font-bold tracking-wider text-[#64748B] uppercase">
                     [ {category.placeholderLabel} ]
                   </span>

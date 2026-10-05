@@ -31,7 +31,7 @@ export const SlotImage: React.FC<{ image: SiteImage; eager?: boolean }> = ({ ima
       decoding="async"
       onLoad={() => setLoaded(true)}
       onError={() => setFailed(true)}
-      className={`absolute inset-0 w-full h-full object-cover rounded-[inherit] ${loaded ? 'opacity-100' : 'opacity-0'}`}
+      className={`absolute inset-0 w-full h-full object-cover rounded-[inherit] ${loaded ? 'slot-loaded opacity-100' : 'opacity-0'}`}
     />
   );
 };

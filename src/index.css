@@ -3,7 +3,7 @@
 @layer utilities {
   /* Bright party backdrop behind every page: soft color glows + confetti dots */
   .party-bg {
-    background-color: #F4F9FF;
+    background-color: #E8F1FC;
     background-image:
       radial-gradient(circle at 1px 1px, rgba(8, 123, 245, 0.10) 1.5px, transparent 0),
       radial-gradient(60rem 40rem at 0% 0%, rgba(56, 189, 248, 0.32), transparent 60%),
@@ -50,6 +50,15 @@
 
   .image-placeholder:hover {
     border-color: #94A3B8;
+  }
+
+  /* Once a real photo has loaded, hide the placeholder label and dashed border behind it */
+  .image-placeholder:has(> img.slot-loaded) {
+    border-color: transparent;
+    overflow: hidden;
+  }
+  .image-placeholder:has(> img.slot-loaded) > :not(img) {
+    visibility: hidden;
   }
 
   /* Specific replaceable hero background placeholder */

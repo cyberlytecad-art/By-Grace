@@ -357,7 +357,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   }
 
   return (
-    <div className="w-full bg-white lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
+    <div className="w-full lg:h-[calc(100vh-86px)] lg:overflow-hidden flex flex-col">
       {/* Top Header Bar */}
       <div className="border-b border-[#E8ECF1] bg-white shrink-0 py-3 sm:py-4 px-4 sm:px-6">
         <div className="max-w-[1300px] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-2">
@@ -402,7 +402,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
           >
 
             {/* STEP 1: CHOOSE RENTAL ITEMS */}
-            <div className="bg-white border border-[#E8ECF1] rounded-xl p-5 sm:p-7 shadow-xs">
+            <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
               <div className="flex items-center justify-between mb-5 pb-3 border-b border-[#F1F5F9]">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
@@ -527,7 +527,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
             </div>
 
             {/* STEP 2: EVENT & DELIVERY DETAILS */}
-            <div className="bg-white border border-[#E8ECF1] rounded-xl p-5 sm:p-7 shadow-xs">
+            <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
               <div className="mb-5 pb-3 border-b border-[#F1F5F9]">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
                   Step 2
@@ -714,7 +714,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
             </div>
 
             {/* STEP 3: CUSTOMER & DELIVERY ADDRESS */}
-            <div className="bg-white border border-[#E8ECF1] rounded-xl p-5 sm:p-7 shadow-xs">
+            <div className="bg-white border border-[#D3DDE9] rounded-xl p-5 sm:p-7 shadow-lg shadow-[#071326]/10">
               <div className="mb-5 pb-3 border-b border-[#F1F5F9]">
                 <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
                   Step 3

@@ -86,7 +86,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
             return (
               <div
                 key={pkg.id}
-                className="bg-white border border-[#E8ECF1] hover:border-[#CBD5E1] shadow-md hover:shadow-lg rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
+                className="bg-white border border-[#D3DDE9] hover:border-[#087BF5] shadow-lg shadow-[#071326]/10 hover:shadow-xl rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
               >
                 <div>
                   {/* Eyebrow & Package Code */}
@@ -155,7 +155,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Custom Bundling note */}
-        <div className="mt-14 party-banner border border-white shadow-sm rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
+        <div className="mt-14 party-banner border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
           <h4 className="text-lg font-bold text-[#071326]">
             Need a custom package for your specific event size?
           </h4>
