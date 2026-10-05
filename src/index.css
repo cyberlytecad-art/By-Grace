@@ -2,6 +2,11 @@
 
 @layer utilities {
   /* Bright party backdrop behind every page: soft color glows + confetti dots */
+  .hero-fade {
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.5) 78%, transparent 96%);
+    mask-image: linear-gradient(to bottom, #000 0%, #000 58%, rgba(0, 0, 0, 0.5) 78%, transparent 96%);
+  }
+
   .party-bg {
     background-color: #E8F1FC;
     background-image:
@@ -64,7 +69,7 @@
   /* Specific replaceable hero background placeholder */
   /* To replace with an actual photo later, simply set the background-image below: */
   .hero-placeholder-bg {
-    background-color: #DDE3EA;
+    background-color: transparent;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

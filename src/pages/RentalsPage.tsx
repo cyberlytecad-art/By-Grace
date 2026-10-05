@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowRight, Candy, Dices, IceCreamCone, Music, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
 import { SlotImage } from '../components/SlotImage';
-import { RENTAL_IMAGES } from '../data/siteImages';
+import { RENTAL_IMAGES, SiteImage } from '../data/siteImages';
 import { RENTAL_INVENTORY } from '../data/rentalInventory';
 
 interface RentalsPageProps {
@@ -14,6 +14,7 @@ interface RentalItem {
   name: string;
   placeholderLabel: string;
   shortDesc: string;
+  image?: SiteImage;
 }
 
 /** Icons for items that don't have a photo yet. */
@@ -22,6 +23,13 @@ const PLACEHOLDER_ICONS: Record<string, React.ElementType> = {
   'snow-cone': IceCreamCone,
   'dj-service': Music,
   'giant-games': Dices,
+};
+
+/** Mosaic layout: water slides is the big feature tile, the rest fill around it. */
+const TILE_SPANS: Record<string, string> = {
+  'water-slides': 'col-span-2 row-span-2',
+  'bounce-houses': 'lg:col-span-2',
+  'decor-more': 'lg:col-span-2',
 };
 
 const scrollToSection = (id: string) => {
@@ -66,6 +74,13 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
       placeholderLabel: 'REPLACE WITH CONCESSIONS IMAGE',
       shortDesc: 'Fun, nostalgic event snacks including commercial popcorn makers and fluffy cotton candy machines.',
     },
+    {
+      id: 'decor-more',
+      name: 'Decor & More',
+      placeholderLabel: 'REPLACE WITH DECOR IMAGE',
+      shortDesc: 'Balloon decor, DJ service and giant games to finish off the party.',
+      image: { src: `${import.meta.env.BASE_URL}images/items/balloon-decor.jpg`, alt: 'Balloon decor' },
+    },
   ];
 
   return (
@@ -90,33 +105,38 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
           </p>
         </div>
 
-        {/* RENTAL GRID: each card scrolls down to that category's items below. */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-7 gap-y-8 sm:gap-y-10">
+        {/* RENTAL GRID: a photo mosaic. Each tile scrolls down to that category's items below. */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 auto-rows-[170px] sm:auto-rows-[210px] lg:auto-rows-[230px] gap-3 sm:gap-4">
           {rentalCategories.map((category) => {
+            const count = RENTAL_INVENTORY.find((s) => s.id === category.id)?.items.length ?? 0;
+            const featured = category.id === 'water-slides';
+            const wide = featured || Boolean(TILE_SPANS[category.id]);
             return (
               <div
                 key={category.id}
                 onClick={() => scrollToSection(category.id)}
-                className="group cursor-pointer select-none"
+                className={`group relative cursor-pointer select-none rounded-2xl overflow-hidden bg-[#0B1B33] shadow-xl shadow-[#071326]/20 ring-1 ring-[#071326]/10 ${TILE_SPANS[category.id] ?? ''}`}
               >
-                {/* 
-                  Large rectangular image placeholder
-                  Aspect ratio 16:9 / 1.65:1 with subtle 8-10px radius
-                */}
-                <div className="relative w-full aspect-[16/9.8] rounded-[10px] overflow-hidden shadow-lg shadow-[#071326]/15 image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-4 transition-all duration-200 group-hover:border-[#087BF5] group-hover:translate-y-[-2px]">
-                  <span className="text-xs sm:text-[13px] font-bold tracking-wider text-[#64748B] uppercase">
-                    [ {category.placeholderLabel} ]
-                  </span>
-                  <SlotImage image={RENTAL_IMAGES[category.id]} />
+                <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105">
+                  <SlotImage image={category.image ?? RENTAL_IMAGES[category.id]} eager={featured} />
                 </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-[#071326]/85 via-[#071326]/25 to-transparent" aria-hidden="true" />
 
-                {/* Below image: category name on left, small thin blue arrow on far right */}
-                <div className="mt-3.5 flex items-center justify-between px-1">
-                  <h3 className="font-bold text-lg sm:text-xl text-[#071326] group-hover:text-[#087BF5] transition-colors">
-                    {category.name}
-                  </h3>
-                  <div className="text-[#087BF5] transform group-hover:translate-x-1 transition-transform">
-                    <ArrowRight className="w-5 h-5 stroke-[2]" />
+                <span className="absolute top-3 left-3 sm:top-4 sm:left-4 px-2.5 py-1 rounded-full bg-white/90 text-[11px] sm:text-xs font-bold text-[#071326] shadow-sm">
+                  {count} {count === 1 ? 'option' : 'options'}
+                </span>
+
+                <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5 lg:p-6 flex items-end justify-between gap-3">
+                  <div className="min-w-0">
+                    <h3 className={`font-black text-white tracking-tight leading-tight drop-shadow ${featured ? 'text-2xl sm:text-4xl' : 'text-lg sm:text-2xl'}`}>
+                      {category.name}
+                    </h3>
+                    <p className={`text-white/85 text-sm mt-1 leading-snug ${featured ? 'hidden sm:block max-w-md' : wide ? 'hidden lg:block max-w-md' : 'hidden'}`}>
+                      {category.shortDesc}
+                    </p>
+                  </div>
+                  <div className="shrink-0 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white/20 backdrop-blur-md border border-white/40 text-white flex items-center justify-center transition-all group-hover:bg-[#087BF5] group-hover:border-[#087BF5]">
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.2] transition-transform group-hover:translate-x-0.5" />
                   </div>
                 </div>
               </div>
