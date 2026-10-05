@@ -29,11 +29,7 @@ export default function App() {
       setSelectedRentalCategory(undefined);
     }
 
-    if (extraData?.preselectedItemId) {
-      setSelectedItemId(extraData.preselectedItemId);
-    } else if (page !== 'estimator') {
-      setSelectedItemId(undefined);
-    }
+    setSelectedItemId(extraData?.preselectedItemId);
   };
 
   return (

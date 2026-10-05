@@ -1,4 +1,5 @@
 import { BookableItem } from '../types';
+import { RENTAL_INVENTORY } from './rentalInventory';
 
 export interface DeliveryCity {
   name: string;
@@ -22,158 +23,50 @@ export const DELIVERY_CITIES: DeliveryCity[] = [
   { name: 'Other Central FL Location', fee: 50, note: 'Quote verified upon address confirmation' },
 ];
 
+/**
+ * Estimate prices for each Rentals page item. These are still placeholders
+ * (bounce houses, the 18ft slide and combos follow Instagram flyer prices);
+ * replace them with the real rate sheet. 0 = quoted by phone.
+ */
+const PRICES: Record<string, { price: number; unit: string }> = {
+  'blue-palm-18ft-slide': { price: 295, unit: 'rental' },
+  'sun-palm-dual-lane-slide': { price: 340, unit: 'rental' },
+  'teal-wave-slide': { price: 349, unit: 'rental' },
+  'obstacle-castle-bounce': { price: 150, unit: 'rental' },
+  'rainbow-castle-bounce': { price: 150, unit: 'rental' },
+  'white-red-castle-bounce': { price: 150, unit: 'rental' },
+  'pink-purple-castle-bounce': { price: 150, unit: 'rental' },
+  'toddler-pink-castle': { price: 150, unit: 'rental' },
+  'marble-castle-combo': { price: 250, unit: 'rental' },
+  'rainbow-castle-combo': { price: 200, unit: 'rental' },
+  'white-party-tent': { price: 260, unit: 'rental' },
+  'large-canopy-tent': { price: 140, unit: 'rental' },
+  'blue-canopy-tents': { price: 50, unit: 'canopy' },
+  'white-folding-chairs': { price: 15, unit: 'set of 6' },
+  'tables-chairs-setup': { price: 22, unit: '1 table + 6 chairs' },
+  'linens-elegant-setups': { price: 0, unit: 'quote' },
+  'popcorn-machine': { price: 65, unit: 'machine' },
+  'cotton-candy': { price: 65, unit: 'machine' },
+  'snow-cone': { price: 65, unit: 'machine' },
+  'balloon-decor': { price: 0, unit: 'quote' },
+  'dj-service': { price: 0, unit: 'quote' },
+  'giant-games': { price: 0, unit: 'quote' },
+};
+
+/** Every item on the Rentals page, in the same order, plus the packages. */
 export const BOOKABLE_ITEMS: BookableItem[] = [
-  // Inflatables
-  {
-    id: 'ws-18-tropical',
-    name: '18ft Tropical Wave Water Slide',
-    category: 'inflatables',
-    price: 280,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH WATER SLIDE IMAGE',
-    description: '18-foot tall commercial single-lane water slide with deep splash landing pool.',
-  },
-  {
-    id: 'ws-20-slip',
-    name: '20ft Dual Lane Slip & Slide',
-    category: 'inflatables',
-    price: 340,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH DUAL WATER SLIDE IMAGE',
-    description: 'High-speed dual lane commercial racer slide with elongated splash landing.',
-  },
-  {
-    id: 'bh-classic-castle',
-    name: 'Classic Castle Bounce House (15x15)',
-    category: 'inflatables',
-    price: 175,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH BOUNCE HOUSE IMAGE',
-    description: 'Spacious 15ft x 15ft vibrant castle bounce house with safety netting on all 4 sides.',
-  },
-  {
-    id: 'bh-rainbow-party',
-    name: 'Rainbow Celebration Bounce House',
-    category: 'inflatables',
-    price: 175,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH RAINBOW BOUNCER IMAGE',
-    description: 'Eye-catching colorful bounce house great for boys and girls birthday celebrations.',
-  },
-  {
-    id: 'combo-4in1-castle',
-    name: '4-in-1 Wet/Dry Castle Combo',
-    category: 'inflatables',
-    price: 250,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH COMBO IMAGE',
-    description: 'Spacious jump area, basketball hoop, climbing wall, and attached water or dry slide.',
-  },
-  {
-    id: 'combo-tropical-palm',
-    name: 'Tropical Palm Combo with Pool',
-    category: 'inflatables',
-    price: 275,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH PALM COMBO IMAGE',
-    description: 'Florida tropical palm themed bounce and slide combo unit with refreshing splash pool.',
-  },
-
-  // Tents
-  {
-    id: 'tent-10x20',
-    name: '10x20 Heavy-Duty Canopy Tent',
-    category: 'tents',
-    price: 140,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH 10X20 TENT IMAGE',
-    description: 'Commercial UV-blocking white canopy tent, seats 20–25 guests comfortably.',
-  },
-  {
-    id: 'tent-20x20-peak',
-    name: '20x20 High Peak Event Tent',
-    category: 'tents',
-    price: 260,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH 20X20 TENT IMAGE',
-    description: 'Elegant high peak tension tent for weddings, graduations, and large parties.',
-  },
-  {
-    id: 'tent-20x40-gala',
-    name: '20x40 Grand Celebration Tent',
-    category: 'tents',
-    price: 480,
-    unit: 'rental',
-    placeholderLabel: 'REPLACE WITH 20X40 TENT IMAGE',
-    description: 'Maximum coverage commercial tent accommodating up to 80-100 guests.',
-  },
-
-  // Tables & Chairs
-  {
-    id: 'tbl-6ft-banquet',
-    name: '6ft White Banquet Folding Table',
-    category: 'tables-chairs',
-    price: 10,
-    unit: 'table',
-    placeholderLabel: 'REPLACE WITH BANQUET TABLE IMAGE',
-    description: 'Heavy duty, commercial white plastic folding table (seats 6-8 guests).',
-  },
-  {
-    id: 'tbl-60-round',
-    name: '60-inch Round Dining Table',
-    category: 'tables-chairs',
-    price: 14,
-    unit: 'table',
-    placeholderLabel: 'REPLACE WITH ROUND TABLE IMAGE',
-    description: 'Classic 5ft round dining table (seats 8 guests comfortably).',
-  },
-  {
-    id: 'chr-white-folding',
-    name: 'White Commercial Folding Chairs (Set of 6)',
-    category: 'tables-chairs',
-    price: 15,
-    unit: 'set of 6',
-    placeholderLabel: 'REPLACE WITH CHAIRS SET IMAGE',
-    description: 'Set of 6 clean, sanitized white resin steel-frame folding chairs ($2.50/chair).',
-  },
-  {
-    id: 'set-table-6chairs',
-    name: 'Table & Chairs Bundle (1 Table + 6 Chairs)',
-    category: 'tables-chairs',
-    price: 22,
-    unit: 'bundle',
-    placeholderLabel: 'REPLACE WITH TABLE CHAIR BUNDLE IMAGE',
-    description: 'One 6ft folding table plus 6 matching white chairs (Save $3 per set).',
-  },
-
-  // Concessions
-  {
-    id: 'conc-popcorn',
-    name: 'Commercial Popcorn Machine + 30 Servings',
-    category: 'concessions',
-    price: 65,
-    unit: 'machine',
-    placeholderLabel: 'REPLACE WITH POPCORN MACHINE IMAGE',
-    description: 'Theater style popper with corn kernels, movie theater buttery salt, and 30 serving bags.',
-  },
-  {
-    id: 'conc-cotton-candy',
-    name: 'Cotton Candy Machine + 30 Cones & Sugar',
-    category: 'concessions',
-    price: 65,
-    unit: 'machine',
-    placeholderLabel: 'REPLACE WITH COTTON CANDY IMAGE',
-    description: 'Spun sugar cotton candy maker with pink vanilla sugar and 30 serving sticks.',
-  },
-  {
-    id: 'conc-snow-cone',
-    name: 'Snow Cone Ice Shaver + 30 Cups & Syrups',
-    category: 'concessions',
-    price: 65,
-    unit: 'machine',
-    placeholderLabel: 'REPLACE WITH SNOW CONE IMAGE',
-    description: 'Commercial shaved ice maker with cherry and blue raspberry syrups and cups.',
-  },
+  ...RENTAL_INVENTORY.flatMap((section) =>
+    section.items.map((item): BookableItem => ({
+      id: item.id,
+      name: item.name,
+      category: section.id,
+      price: PRICES[item.id]?.price ?? 0,
+      unit: PRICES[item.id]?.unit ?? 'quote',
+      placeholderLabel: item.name,
+      description: item.description,
+      image: item.image,
+    })),
+  ),
 
   // Packages (Bundles)
   {

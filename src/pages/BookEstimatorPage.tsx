@@ -14,12 +14,31 @@ import {
   Armchair, 
   Popcorn, 
   Package, 
-  Layers
+  Layers,
+  Waves,
+  Castle,
+  PartyPopper
 } from 'lucide-react';
 import { BookableItem, SelectedCartItem, BookingDetails, BookingConfirmation } from '../types';
 import { BOOKABLE_ITEMS, DELIVERY_CITIES } from '../data/rentalCatalog';
 import { SlotImage } from '../components/SlotImage';
 import { imageForItem } from '../data/siteImages';
+import { RENTAL_INVENTORY } from '../data/rentalInventory';
+
+/** Shows "Quote" instead of $0 for items priced by phone. */
+const money = (n: number) => (n > 0 ? `$${n}` : 'Quote');
+
+const INFLATABLE_CATEGORIES = ['water-slides', 'bounce-houses', 'combos'];
+
+const CATEGORY_ICONS: Record<string, React.ElementType> = {
+  'water-slides': Waves,
+  'bounce-houses': Castle,
+  combos: Sparkles,
+  tents: Tent,
+  'tables-chairs': Armchair,
+  concessions: Popcorn,
+  'decor-more': PartyPopper,
+};
 
 interface BookEstimatorPageProps {
   initialItemId?: string;
@@ -33,12 +52,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
   // Category filter for the item catalog
   const [selectedCategoryTab, setSelectedCategoryTab] = useState<string>(() => {
     if (initialCategory) {
+      if (initialCategory === 'packages' || RENTAL_INVENTORY.some((sec) => sec.id === initialCategory)) return initialCategory;
       const lower = initialCategory.toLowerCase();
-      if (lower.includes('inflatable') || lower.includes('water') || lower.includes('bounce') || lower.includes('slide')) return 'inflatables';
-      if (lower.includes('tent')) return 'tents';
-      if (lower.includes('table') || lower.includes('chair')) return 'tables-chairs';
-      if (lower.includes('concession') || lower.includes('popcorn')) return 'concessions';
       if (lower.includes('package') || lower.includes('bundle')) return 'packages';
+      const section = RENTAL_INVENTORY.find((sec) => sec.name.toLowerCase() === lower);
+      if (section) return section.id;
     }
     return 'all';
   });
@@ -52,13 +70,13 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
     if (initialCategory) {
       // Find the first matching item in that category
       const found = BOOKABLE_ITEMS.find(item => 
-        item.name.toLowerCase().includes(initialCategory.toLowerCase()) ||
-        item.category.toLowerCase().includes(initialCategory.toLowerCase())
+        item.category === initialCategory ||
+        item.name.toLowerCase().includes(initialCategory.toLowerCase())
       );
       if (found) return [{ item: found, quantity: 1 }];
     }
     // Default starter item: popular water slide so the user immediately sees a working estimate
-    const defaultItem = BOOKABLE_ITEMS.find(i => i.id === 'ws-18-tropical');
+    const defaultItem = BOOKABLE_ITEMS.find(i => i.id === 'blue-palm-18ft-slide');
     return defaultItem ? [{ item: defaultItem, quantity: 1 }] : [];
   });
 
@@ -125,7 +143,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
 
   const surfaceFee = useMemo(() => {
     if (details.surfaceType === 'concrete' || details.surfaceType === 'indoor') {
-      const inflatablesCount = cart.filter(c => c.item.category === 'inflatables').reduce((sum, c) => sum + c.quantity, 0);
+      const inflatablesCount = cart.filter(c => INFLATABLE_CATEGORIES.includes(c.item.category)).reduce((sum, c) => sum + c.quantity, 0);
       return inflatablesCount > 0 ? 25 : 0;
     }
     return 0;
@@ -192,10 +210,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
 
   const categories = [
     { id: 'all', label: 'All Equipment', icon: Layers },
-    { id: 'inflatables', label: 'Inflatables', icon: Sparkles },
-    { id: 'tents', label: 'Tents', icon: Tent },
-    { id: 'tables-chairs', label: 'Tables & Chairs', icon: Armchair },
-    { id: 'concessions', label: 'Concessions', icon: Popcorn },
+    ...RENTAL_INVENTORY.map((sec) => ({ id: sec.id, label: sec.name, icon: CATEGORY_ICONS[sec.id] ?? Sparkles })),
     { id: 'packages', label: 'Packages', icon: Package },
   ];
 
@@ -283,11 +298,11 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                     <div>
                       <span className="font-bold text-[#071326]">{cartItem.item.name}</span>
                       <span className="text-xs text-[#64748B] block mt-0.5">
-                        Qty: {cartItem.quantity} &times; ${cartItem.item.price} per {cartItem.item.unit}
+                        Qty: {cartItem.quantity} &times; {money(cartItem.item.price)}{cartItem.item.price > 0 ? ` per ${cartItem.item.unit}` : ''}
                       </span>
                     </div>
                     <span className="font-bold text-[#071326]">
-                      ${cartItem.item.price * cartItem.quantity}
+                      {money(cartItem.item.price * cartItem.quantity)}
                     </span>
                   </div>
                 ))}
@@ -457,13 +472,24 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        {/* Compact Image Placeholder */}
-                        <div className="relative w-20 h-16 rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 shrink-0">
-                          <span className="text-[8px] font-bold text-[#64748B] uppercase leading-tight line-clamp-2">
-                            [ {item.placeholderLabel} ]
-                          </span>
-                          <SlotImage image={imageForItem(item.id)} />
-                        </div>
+                        {/* Compact photo; items without one yet show their category icon, like the Rentals page. */}
+                        {item.image || item.category === 'packages' ? (
+                          <div className="relative w-20 h-16 rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 shrink-0">
+                            <span className="text-[8px] font-bold text-[#64748B] uppercase leading-tight line-clamp-2">
+                              [ {item.placeholderLabel} ]
+                            </span>
+                            <SlotImage image={item.image ?? imageForItem(item.id)} />
+                          </div>
+                        ) : (
+                          (() => {
+                            const Icon = CATEGORY_ICONS[item.category] ?? Sparkles;
+                            return (
+                              <div className="w-20 h-16 rounded-[8px] party-banner border border-[#D3DDE9] flex items-center justify-center text-[#087BF5] shrink-0">
+                                <Icon className="w-7 h-7 stroke-[1.6]" />
+                              </div>
+                            );
+                          })()
+                        )}
 
                         <div>
                           <div className="flex items-center gap-2">
@@ -476,11 +502,13 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           </p>
                           <div className="mt-2 flex items-center gap-2">
                             <span className="text-sm font-black text-[#087BF5]">
-                              ${item.price}
+                              {item.price > 0 ? `$${item.price}` : 'Call for price'}
                             </span>
-                            <span className="text-xs text-[#94A3B8]">
-                              / {item.unit}
-                            </span>
+                            {item.price > 0 && (
+                              <span className="text-xs text-[#94A3B8]">
+                                / {item.unit}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -513,7 +541,7 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           <button
                             type="button"
                             onClick={() => handleAddItem(item)}
-                            className="w-full sm:w-auto px-4 py-2 bg-white border border-[#CBD5E1] hover:border-[#087BF5] hover:text-[#087BF5] text-[#071326] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
+                            className="w-full sm:w-auto whitespace-nowrap px-4 py-2 bg-white border border-[#CBD5E1] hover:border-[#087BF5] hover:text-[#087BF5] text-[#071326] font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-1.5"
                           >
                             <Plus className="w-3.5 h-3.5 text-[#087BF5]" />
                             <span>Add to Quote</span>
@@ -864,13 +892,13 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                           {cartItem.item.name}
                         </span>
                         <span className="text-[#64748B] text-xs">
-                          {cartItem.quantity} &times; ${cartItem.item.price}
+                          {cartItem.quantity} &times; {money(cartItem.item.price)}
                         </span>
                       </div>
 
                       <div className="flex items-center gap-2">
                         <span className="font-extrabold text-[#071326]">
-                          ${cartItem.item.price * cartItem.quantity}
+                          {money(cartItem.item.price * cartItem.quantity)}
                         </span>
                         <button
                           type="button"

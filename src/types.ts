@@ -11,11 +11,14 @@ export interface RentalCategory {
 export interface BookableItem {
   id: string;
   name: string;
-  category: 'inflatables' | 'tents' | 'tables-chairs' | 'concessions' | 'packages';
+  /** A Rentals page section id (e.g. 'bounce-houses') or 'packages'. */
+  category: string;
+  /** 0 means the price is quoted by phone. */
   price: number;
   unit: string;
   placeholderLabel: string;
   description: string;
+  image?: { src: string; alt: string };
 }
 
 export interface SelectedCartItem {

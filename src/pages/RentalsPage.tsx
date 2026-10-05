@@ -6,7 +6,7 @@ import { RENTAL_IMAGES, SiteImage } from '../data/siteImages';
 import { RENTAL_INVENTORY } from '../data/rentalInventory';
 
 interface RentalsPageProps {
-  onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
+  onNavigate: (page: PageId, extraData?: { preselectedCategory?: string; preselectedItemId?: string }) => void;
 }
 
 interface RentalItem {
@@ -186,7 +186,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                       <p className="text-sm text-[#64748B] mt-1.5 leading-relaxed flex-1">{item.description}</p>
                       <button
                         onClick={() => {
-                          onNavigate('estimator', { preselectedCategory: section.name });
+                          onNavigate('estimator', { preselectedCategory: section.id, preselectedItemId: item.id });
                           window.scrollTo({ top: 0, behavior: 'smooth' });
                         }}
                         className="mt-4 self-start px-4 py-2 bg-[#087BF5] hover:bg-[#076edc] text-white font-semibold text-sm rounded-[8px] flex items-center gap-2 transition-colors"
