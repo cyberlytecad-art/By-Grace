@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, Check } from 'lucide-react';
 import { PageId } from '../types';
+import { SlotImage } from '../components/SlotImage';
+import { PACKAGE_IMAGES } from '../data/siteImages';
 
 interface PackagesPageProps {
   onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
@@ -98,10 +100,11 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                   </div>
 
                   {/* Image Placeholder */}
-                  <div className="w-full aspect-[16/10] rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-3 mb-4">
+                  <div className="relative w-full aspect-[16/10] rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-3 mb-4">
                     <span className="text-[11px] sm:text-xs font-bold text-[#64748B] uppercase tracking-wider">
                       [ {pkg.placeholderLabel} ]
                     </span>
+                    <SlotImage image={PACKAGE_IMAGES[pkg.id]} />
                   </div>
 
                   {/* Title & Description */}

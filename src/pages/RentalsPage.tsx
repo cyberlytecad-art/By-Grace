@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { ArrowRight, Check, X } from 'lucide-react';
 import { PageId } from '../types';
+import { SlotImage } from '../components/SlotImage';
+import { RENTAL_IMAGES } from '../data/siteImages';
 
 interface RentalsPageProps {
   onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
@@ -110,6 +112,7 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                   <span className="text-xs sm:text-[13px] font-bold tracking-wider text-[#64748B] uppercase">
                     [ {category.placeholderLabel} ]
                   </span>
+                  <SlotImage image={RENTAL_IMAGES[category.id]} />
                 </div>
 
                 {/* Below image: category name on left, small thin blue arrow on far right */}

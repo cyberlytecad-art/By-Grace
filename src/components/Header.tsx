@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Phone, Menu, X } from 'lucide-react';
 import { PageId } from '../types';
+import { SlotImage } from './SlotImage';
+import { LOGO } from '../data/siteImages';
 
 interface HeaderProps {
   currentPage: PageId;
@@ -34,8 +36,9 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           title="By Grace Party Rentals - Home"
         >
           {/* Circular Logo Image Slot */}
-          <div className="image-placeholder w-14 h-14 md:w-16 md:h-16 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[10px] md:text-[11px] font-bold text-[#64748B] leading-tight transition-transform group-hover:scale-105">
+          <div className="relative image-placeholder w-14 h-14 md:w-16 md:h-16 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[10px] md:text-[11px] font-bold text-[#64748B] leading-tight transition-transform group-hover:scale-105">
             <span>[ BY GRACE LOGO ]</span>
+            <SlotImage image={LOGO} eager />
           </div>
 
           <div className="hidden sm:block">

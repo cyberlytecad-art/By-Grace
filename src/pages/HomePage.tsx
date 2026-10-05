@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, Tent, Armchair, Package, Popcorn, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
+import { SlotImage } from '../components/SlotImage';
+import { HERO } from '../data/siteImages';
 
 interface HomePageProps {
   onNavigate: (page: PageId) => void;
@@ -85,6 +87,8 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
               </p>
             </div>
           </div>
+
+          <SlotImage image={HERO} eager />
 
           {/* Subtle dark/blue translucent gradient overlay on left for readability */}
           <div 

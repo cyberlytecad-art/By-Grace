@@ -1,6 +1,8 @@
 import React from 'react';
 import { Phone, MapPin, Clock } from 'lucide-react';
 import { PageId } from '../types';
+import { SlotImage } from './SlotImage';
+import { LOGO } from '../data/siteImages';
 
 interface FooterProps {
   onNavigate: (page: PageId) => void;
@@ -19,8 +21,9 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
           {/* Col 1: Brand & Logo */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="image-placeholder w-12 h-12 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[9px] font-bold text-[#64748B]">
+              <div className="relative image-placeholder w-12 h-12 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[9px] font-bold text-[#64748B]">
                 <span>[ BY GRACE LOGO ]</span>
+                <SlotImage image={LOGO} />
               </div>
               <div>
                 <span className="block text-lg font-black text-[#071326] tracking-tight">
