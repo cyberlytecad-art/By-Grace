@@ -141,7 +141,7 @@ export const RENTAL_INVENTORY: InventorySection[] = [
         id: 'white-folding-chairs',
         name: 'White Folding Chairs',
         description: 'Sturdy white folding chairs, cleaned before every rental.',
-        image: photo('white-folding-chairs', 'Rows of white folding chairs'),
+        image: photo('white-folding-chairs', 'Rows of white folding chairs in the By Grace warehouse'),
       },
       {
         id: 'tables-chairs-setup',
@@ -189,7 +189,7 @@ export const RENTAL_INVENTORY: InventorySection[] = [
         id: 'balloon-decor',
         name: 'Balloon & Event Decor',
         description: 'Balloon garlands, backdrops and themed decor styled to match your party.',
-        image: photo('balloon-decor', 'Black and white balloon decor with a themed backdrop'),
+        image: photo('balloon-decor', 'Black and ivory balloon column'),
       },
       {
         id: 'dj-service',
