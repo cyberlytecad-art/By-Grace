@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { BookableItem, SelectedCartItem, BookingDetails, BookingConfirmation } from '../types';
 import { BOOKABLE_ITEMS, DELIVERY_CITIES } from '../data/rentalCatalog';
-import { SmartImage } from '../components/SmartImage';
+import { SlotImage } from '../components/SlotImage';
 import { imageForItem } from '../data/siteImages';
 
 interface BookEstimatorPageProps {
@@ -457,12 +457,13 @@ export const BookEstimatorPage: React.FC<BookEstimatorPageProps> = ({
                       }`}
                     >
                       <div className="flex items-start gap-4">
-                        {/* Compact photo */}
-                        <SmartImage
-                          image={imageForItem(item.id)}
-                          quiet
-                          className="w-20 h-16 rounded-xl shrink-0 ring-1 ring-[#E8ECF1]"
-                        />
+                        {/* Compact Image Placeholder */}
+                        <div className="relative w-20 h-16 rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 shrink-0">
+                          <span className="text-[8px] font-bold text-[#64748B] uppercase leading-tight line-clamp-2">
+                            [ {item.placeholderLabel} ]
+                          </span>
+                          <SlotImage image={imageForItem(item.id)} />
+                        </div>
 
                         <div>
                           <div className="flex items-center gap-2">

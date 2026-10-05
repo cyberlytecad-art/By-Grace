@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Phone, Menu, X } from 'lucide-react';
 import { PageId } from '../types';
-import { Logo } from './Logo';
+import { SlotImage } from './SlotImage';
+import { LOGO } from '../data/siteImages';
 
 interface HeaderProps {
   currentPage: PageId;
@@ -26,18 +27,22 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white/85 backdrop-blur-md border-b border-[#E8ECF1]/80 supports-[backdrop-filter]:bg-white/75">
+    <header className="sticky top-0 z-50 bg-white border-b border-[#E8ECF1]">
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 h-[74px] md:h-[82px] flex items-center justify-between">
-        {/* Left: Logo */}
+        {/* Left: Circular By Grace Party Rentals Logo Placeholder */}
         <div 
           onClick={() => handleNavClick('home')}
           className="cursor-pointer flex items-center gap-3 select-none group"
           title="By Grace Party Rentals - Home"
         >
-          <Logo className="w-12 h-12 md:w-14 md:h-14 text-lg md:text-xl transition-transform group-hover:scale-105 group-hover:rotate-[-4deg]" />
+          {/* Circular Logo Image Slot */}
+          <div className="relative image-placeholder w-14 h-14 md:w-16 md:h-16 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[10px] md:text-[11px] font-bold text-[#64748B] leading-tight transition-transform group-hover:scale-105">
+            <span>[ BY GRACE LOGO ]</span>
+            <SlotImage image={LOGO} eager />
+          </div>
 
           <div className="hidden sm:block">
-            <span className="block font-display text-xl font-bold text-[#071326] tracking-tight leading-none">
+            <span className="block text-base font-extrabold text-[#071326] tracking-tight leading-none">
               BY GRACE
             </span>
             <span className="block text-xs font-semibold text-[#087BF5] tracking-wider mt-0.5 uppercase">
@@ -74,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           {/* Phone call button */}
           <a
             href="tel:8632804175"
-            className="border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] bg-white px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-full font-semibold text-xs sm:text-sm inline-flex items-center gap-1.5 transition-colors shadow-2xs"
+            className="border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] bg-white px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-[8px] font-semibold text-xs sm:text-sm inline-flex items-center gap-1.5 transition-colors shadow-2xs"
             title="Call By Grace Party Rentals: 863-280-4175"
           >
             <Phone className="w-3.5 h-3.5 text-[#087BF5] stroke-[2.4]" />
@@ -85,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           {/* Primary Blue CTA Button: Book & Quote */}
           <button
             onClick={() => handleNavClick('estimator')}
-            className="bg-gradient-to-r from-[#087BF5] to-[#20BEEF] hover:from-[#076edc] hover:to-[#14ADE0] text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-full font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-md shadow-[#087BF5]/25 transition-all hover:translate-y-[-1px]"
+            className="bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-[8px] font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm transition-all hover:translate-y-[-1px]"
             title="Online Price Estimate & Booking"
           >
             <span>Book & Quote</span>

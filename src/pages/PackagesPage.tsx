@@ -1,10 +1,8 @@
 import React from 'react';
-import { ArrowRight, Check, PartyPopper } from 'lucide-react';
+import { ArrowRight, Check } from 'lucide-react';
 import { PageId } from '../types';
-import { SmartImage } from '../components/SmartImage';
+import { SlotImage } from '../components/SlotImage';
 import { PACKAGE_IMAGES } from '../data/siteImages';
-
-const PACKAGE_TONES = ['berry', 'blue', 'sunset'] as const;
 
 interface PackagesPageProps {
   onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
@@ -24,7 +22,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         '12 White Folding Chairs',
         'Complete Delivery, Setup & Takedown',
       ],
-      pricePlaceholder: 'Bundled rate · ask us for details',
+      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
     },
     {
       id: 'pkg-02',
@@ -38,7 +36,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         '3 Commercial Folding Tables + 18 Chairs',
         'Commercial Hose & Anchor Setup Included',
       ],
-      pricePlaceholder: 'Bundled rate · ask us for details',
+      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
     },
     {
       id: 'pkg-03',
@@ -52,7 +50,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         '4 Tables + 24 Chairs',
         'Popcorn or Cotton Candy Machine with Supplies',
       ],
-      pricePlaceholder: 'Bundled rate · ask us for details',
+      pricePlaceholder: '[ CUSTOM BUNDLED RATE / INQUIRE FOR DETAILS ]',
     },
   ];
 
@@ -67,7 +65,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
           </p>
 
           {/* Large heading */}
-          <h1 className="font-display text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight text-[#071326] mb-4">
+          <h1 className="text-4xl sm:text-5xl md:text-[54px] font-black tracking-tight leading-tight text-[#071326] mb-4">
             Party <span className="text-[#087BF5]">Packages</span>
           </h1>
 
@@ -84,11 +82,11 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
           Subtle borders, clean typography, image placeholders.
         */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-          {packages.map((pkg, idx) => {
+          {packages.map((pkg) => {
             return (
               <div
                 key={pkg.id}
-                className={`relative bg-white rounded-2xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-4px] group ${idx === 1 ? 'ring-2 ring-[#087BF5] shadow-xl shadow-[#087BF5]/15' : 'ring-1 ring-[#E8ECF1] hover:ring-[#CBD5E1] hover:shadow-xl hover:shadow-slate-200/70'}`}
+                className="bg-white border border-[#E8ECF1] hover:border-[#CBD5E1] rounded-xl p-5 sm:p-6 flex flex-col justify-between transition-all hover:translate-y-[-2px] group"
               >
                 <div>
                   {/* Eyebrow & Package Code */}
@@ -96,31 +94,21 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                     <span className="text-xs font-bold uppercase tracking-wider text-[#087BF5]">
                       {pkg.code}
                     </span>
-                    {idx === 1 ? (
-                      <span className="text-[11px] font-bold text-white bg-gradient-to-r from-[#FF6B4A] to-[#FF9F43] px-2.5 py-1 rounded-full">
-                        Most Popular
-                      </span>
-                    ) : (
-                      <span className="text-[11px] font-semibold text-[#64748B] bg-[#F1F5F9] px-2.5 py-1 rounded-full">
-                        Central FL Bundle
-                      </span>
-                    )}
+                    <span className="text-[11px] font-semibold text-[#64748B] bg-[#F1F5F9] px-2 py-0.5 rounded">
+                      Central FL Bundle
+                    </span>
                   </div>
 
-                  {/* Photo */}
-                  <div className="rounded-xl overflow-hidden mb-5 -mx-1">
-                    <SmartImage
-                      image={PACKAGE_IMAGES[pkg.id]}
-                      tone={PACKAGE_TONES[idx % PACKAGE_TONES.length]}
-                      icon={PartyPopper}
-                      label={pkg.code}
-                      className="w-full aspect-[16/10]"
-                      imgClassName="transition-transform duration-500 group-hover:scale-105"
-                    />
+                  {/* Image Placeholder */}
+                  <div className="relative w-full aspect-[16/10] rounded-[8px] image-placeholder border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-3 mb-4">
+                    <span className="text-[11px] sm:text-xs font-bold text-[#64748B] uppercase tracking-wider">
+                      [ {pkg.placeholderLabel} ]
+                    </span>
+                    <SlotImage image={PACKAGE_IMAGES[pkg.id]} />
                   </div>
 
                   {/* Title & Description */}
-                  <h3 className="font-display font-semibold text-2xl text-[#071326] mb-2 group-hover:text-[#087BF5] transition-colors">
+                  <h3 className="font-extrabold text-xl text-[#071326] mb-2 group-hover:text-[#087BF5] transition-colors">
                     {pkg.name}
                   </h3>
                   <p className="text-sm text-[#64748B] mb-5 leading-relaxed">
@@ -156,7 +144,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                     onNavigate('estimator', { preselectedCategory: pkg.name });
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  className="w-full py-3 bg-gradient-to-r from-[#087BF5] to-[#20BEEF] hover:from-[#076edc] hover:to-[#14ADE0] text-white font-bold text-sm rounded-full flex items-center justify-center gap-2 shadow-md shadow-[#087BF5]/25 transition-all"
+                  className="w-full py-3 bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white font-bold text-sm rounded-[8px] flex items-center justify-center gap-2 transition-colors"
                 >
                   <span>Book & Price This Package</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.2]" />
@@ -167,8 +155,8 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
         </div>
 
         {/* Custom Bundling note */}
-        <div className="mt-14 bg-[#F3F8FF] ring-1 ring-[#E1ECFB] rounded-[28px] p-8 sm:p-10 text-center max-w-2xl mx-auto">
-          <h4 className="font-display text-2xl font-semibold text-[#071326]">
+        <div className="mt-14 bg-[#F8FAFC] border border-[#E8ECF1] rounded-xl p-6 sm:p-8 text-center max-w-2xl mx-auto">
+          <h4 className="text-lg font-bold text-[#071326]">
             Need a custom package for your specific event size?
           </h4>
           <p className="text-sm text-[#64748B] mt-1.5 mb-5">
@@ -179,7 +167,7 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
               onNavigate('estimator');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
-            className="px-6 py-3 bg-gradient-to-r from-[#087BF5] to-[#20BEEF] hover:from-[#076edc] hover:to-[#14ADE0] text-white text-sm font-semibold rounded-full shadow-md shadow-[#087BF5]/25 transition-all"
+            className="px-6 py-2.5 bg-[#087BF5] hover:bg-[#076edc] text-white text-sm font-semibold rounded-[8px] transition-colors"
           >
             Customize Your Package & Estimate →
           </button>

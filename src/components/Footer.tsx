@@ -1,8 +1,8 @@
 import React from 'react';
-import { Phone, MapPin, Clock, Instagram } from 'lucide-react';
+import { Phone, MapPin, Clock } from 'lucide-react';
 import { PageId } from '../types';
-import { Logo } from './Logo';
-import { INSTAGRAM_HANDLE, INSTAGRAM_URL } from '../data/siteImages';
+import { SlotImage } from './SlotImage';
+import { LOGO } from '../data/siteImages';
 
 interface FooterProps {
   onNavigate: (page: PageId) => void;
@@ -15,15 +15,18 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
   };
 
   return (
-    <footer className="bg-gradient-to-b from-white to-[#F3F8FF] border-t border-[#E8ECF1] mt-16 md:mt-24">
+    <footer className="bg-white border-t border-[#E8ECF1] mt-16 md:mt-24">
       <div className="max-w-[1250px] mx-auto px-4 sm:px-6 py-12 md:py-16">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-start">
           {/* Col 1: Brand & Logo */}
           <div className="md:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <Logo className="w-12 h-12 text-base" />
+              <div className="relative image-placeholder w-12 h-12 rounded-full border border-dashed border-[#CBD5E1] bg-[#E9EDF2] flex items-center justify-center text-center p-1 text-[9px] font-bold text-[#64748B]">
+                <span>[ BY GRACE LOGO ]</span>
+                <SlotImage image={LOGO} />
+              </div>
               <div>
-                <span className="block font-display text-xl font-bold text-[#071326] tracking-tight">
+                <span className="block text-lg font-black text-[#071326] tracking-tight">
                   BY GRACE PARTY RENTALS
                 </span>
                 <span className="block text-xs font-semibold text-[#087BF5] uppercase tracking-wider">
@@ -34,15 +37,6 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
             <p className="text-sm text-[#64748B] max-w-sm leading-relaxed">
               Family-owned party rental company providing clean, high-quality bounce houses, water slides, tents, tables, chairs, and concessions for any special event.
             </p>
-            <a
-              href={INSTAGRAM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-[#8B5CF6] via-[#E1306C] to-[#FF9F43] text-white px-4 py-2 text-sm font-semibold shadow-sm hover:shadow-md hover:translate-y-[-1px] transition-all"
-            >
-              <Instagram className="w-4 h-4" />
-              <span>@{INSTAGRAM_HANDLE}</span>
-            </a>
           </div>
 
           {/* Col 2: Quick Links */}

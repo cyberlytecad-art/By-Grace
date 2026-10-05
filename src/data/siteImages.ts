@@ -3,12 +3,11 @@
  *
  * To add a real photo, drop the file into `public/images/` using the exact
  * filename below (or change the path here). Until a file exists, each slot
- * shows a branded placeholder, so nothing ever looks broken.
+ * keeps showing its original placeholder.
  *
  * Recommended sizes:
  *  - hero: 2400x1400 landscape
  *  - rentals / packages: 1600x1000 landscape
- *  - instagram: 1080x1080 square
  *  - logo: 512x512 square (PNG with transparency works best)
  */
 
@@ -16,9 +15,6 @@ export interface SiteImage {
   src: string;
   alt: string;
 }
-
-export const INSTAGRAM_HANDLE = 'by_grace_party';
-export const INSTAGRAM_URL = `https://www.instagram.com/${INSTAGRAM_HANDLE}/`;
 
 export const LOGO: SiteImage = {
   src: '/images/logo.png',
@@ -44,12 +40,6 @@ export const PACKAGE_IMAGES: Record<string, SiteImage> = {
   'pkg-02': { src: '/images/packages/package-02.jpg', alt: 'Summer splash combo bundle' },
   'pkg-03': { src: '/images/packages/package-03.jpg', alt: 'Community celebration setup' },
 };
-
-/** Six squares for the "Follow us on Instagram" gallery on the home page. */
-export const INSTAGRAM_GALLERY: SiteImage[] = Array.from({ length: 6 }, (_, i) => ({
-  src: `/images/instagram/ig-${i + 1}.jpg`,
-  alt: `By Grace party setup from Instagram, photo ${i + 1}`,
-}));
 
 /** Picks the best photo for a bookable item in the estimator (by its id prefix). */
 export function imageForItem(itemId: string): SiteImage {
