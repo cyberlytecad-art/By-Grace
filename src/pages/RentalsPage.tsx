@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { ArrowRight, Check, X } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, Candy, Dices, IceCreamCone, Music, Sparkles } from 'lucide-react';
 import { PageId } from '../types';
 import { SlotImage } from '../components/SlotImage';
 import { RENTAL_IMAGES } from '../data/siteImages';
+import { RENTAL_INVENTORY } from '../data/rentalInventory';
 
 interface RentalsPageProps {
   onNavigate: (page: PageId, extraData?: { preselectedCategory?: string }) => void;
@@ -13,54 +14,57 @@ interface RentalItem {
   name: string;
   placeholderLabel: string;
   shortDesc: string;
-  popularItems: string[];
 }
 
-export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
-  const [selectedRental, setSelectedRental] = useState<RentalItem | null>(null);
+/** Icons for items that don't have a photo yet. */
+const PLACEHOLDER_ICONS: Record<string, React.ElementType> = {
+  'cotton-candy': Candy,
+  'snow-cone': IceCreamCone,
+  'dj-service': Music,
+  'giant-games': Dices,
+};
 
+const scrollToSection = (id: string) => {
+  document.getElementById(`rentals-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
   const rentalCategories: RentalItem[] = [
     {
       id: 'water-slides',
       name: 'Water Slides',
       placeholderLabel: 'REPLACE WITH WATER SLIDE IMAGE',
       shortDesc: 'Cool off with our premium single and double lane commercial water slides with splash pools.',
-      popularItems: ['18ft Tropical Wave Water Slide', '20ft Dual Lane Slip & Slide', 'Tsunami Splash Curve Slide'],
     },
     {
       id: 'bounce-houses',
       name: 'Bounce Houses',
       placeholderLabel: 'REPLACE WITH BOUNCE HOUSE IMAGE',
       shortDesc: 'Safe, clean, vibrant themed and classic bouncers for kids of all ages.',
-      popularItems: ['Castle Theme Bouncer (15x15)', 'Rainbow Celebration Bounce House', 'Sports Arena Jumper'],
     },
     {
       id: 'combos',
       name: 'Combos',
       placeholderLabel: 'REPLACE WITH COMBO IMAGE',
       shortDesc: 'The best of both worlds: spacious jump area plus climbing wall, basketball hoop, and slide.',
-      popularItems: ['4-in-1 Wet/Dry Castle Combo', 'Tropical Palm Combo with Pool', 'Multi-Color Adventure Jump & Slide'],
     },
     {
       id: 'tents',
       name: 'Tents',
       placeholderLabel: 'REPLACE WITH TENT IMAGE',
       shortDesc: 'Commercial heavy-duty high peak frame tents offering shade and weather protection for any crowd size.',
-      popularItems: ['10x20 Canopy Tent', '20x20 High Peak Event Tent', '20x40 Celebration Tent with Sidewalls'],
     },
     {
       id: 'tables-chairs',
       name: 'Tables & Chairs',
       placeholderLabel: 'REPLACE WITH TABLES & CHAIRS IMAGE',
       shortDesc: 'Sturdy, clean white folding tables and commercial folding chairs sanitized before every rental.',
-      popularItems: ['6ft & 8ft Heavy Duty White Banquet Tables', '60-inch Round Dining Tables', 'Commercial White Resin Folding Chairs'],
     },
     {
       id: 'concessions',
       name: 'Concessions',
       placeholderLabel: 'REPLACE WITH CONCESSIONS IMAGE',
       shortDesc: 'Fun, nostalgic event snacks including commercial popcorn makers and fluffy cotton candy machines.',
-      popularItems: ['Popcorn Machine with Kernels & Bags', 'Cotton Candy Spinner with Floss Sugar', 'Snow Cone Machine with Syrups'],
     },
   ];
 
@@ -86,29 +90,13 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
           </p>
         </div>
 
-        {/* 
-          RENTAL GRID
-          Exactly 6 cards in a clean 3-column × 2-row grid.
-          Aspect ratio ~16:9 or 1.65:1.
-          Empty image placeholders for all 6.
-          IMAGE
-          LABEL                         →
-          with white page background underneath.
-          Grid gap: 20-28px horizontal, 30-40px vertical.
-        */}
+        {/* RENTAL GRID: each card scrolls down to that category's items below. */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 sm:gap-x-7 gap-y-8 sm:gap-y-10">
           {rentalCategories.map((category) => {
             return (
               <div
                 key={category.id}
-                onClick={() => {
-                  if (category.id === 'combos') {
-                    onNavigate('packages');
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                  } else {
-                    setSelectedRental(category);
-                  }
-                }}
+                onClick={() => scrollToSection(category.id)}
                 className="group cursor-pointer select-none"
               >
                 {/* 
@@ -135,6 +123,64 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
             );
           })}
         </div>
+
+        {/* Every item, grouped by category. The cards above scroll down to these. */}
+        {RENTAL_INVENTORY.map((section) => (
+          <section key={section.id} id={`rentals-${section.id}`} className="scroll-mt-28 mt-16 sm:mt-20">
+            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6 sm:mb-8">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-[#087BF5] mb-1.5">
+                  {section.items.length} {section.items.length === 1 ? 'option' : 'options'}
+                </p>
+                <h2 className="text-3xl sm:text-4xl font-black tracking-tight text-[#071326]">{section.name}</h2>
+                <p className="text-sm sm:text-base text-[#64748B] mt-2 max-w-[640px]">{section.blurb}</p>
+              </div>
+              <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="self-start sm:self-auto text-sm font-semibold text-[#087BF5] hover:text-[#076edc] whitespace-nowrap"
+              >
+                Back to all rentals ↑
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
+              {section.items.map((item) => {
+                const Icon = PLACEHOLDER_ICONS[item.id] ?? Sparkles;
+                return (
+                  <div
+                    key={item.id}
+                    className="flex flex-col bg-white rounded-[12px] border border-[#D3DDE9] shadow-lg shadow-[#071326]/10 overflow-hidden transition-all duration-200 hover:border-[#087BF5] hover:shadow-xl hover:translate-y-[-2px]"
+                  >
+                    {item.image ? (
+                      <div className="relative w-full aspect-[4/3] bg-[#E9EDF2] image-placeholder">
+                        <SlotImage image={item.image} />
+                      </div>
+                    ) : (
+                      <div className="w-full aspect-[4/3] party-banner flex flex-col items-center justify-center gap-3 text-[#087BF5]">
+                        <Icon className="w-14 h-14 stroke-[1.5]" />
+                        <span className="text-xs font-bold uppercase tracking-wider text-[#64748B]">Photo coming soon</span>
+                      </div>
+                    )}
+                    <div className="flex flex-col flex-1 p-5">
+                      <h3 className="font-bold text-lg text-[#071326]">{item.name}</h3>
+                      <p className="text-sm text-[#64748B] mt-1.5 leading-relaxed flex-1">{item.description}</p>
+                      <button
+                        onClick={() => {
+                          onNavigate('estimator', { preselectedCategory: section.name });
+                          window.scrollTo({ top: 0, behavior: 'smooth' });
+                        }}
+                        className="mt-4 self-start px-4 py-2 bg-[#087BF5] hover:bg-[#076edc] text-white font-semibold text-sm rounded-[8px] flex items-center gap-2 transition-colors"
+                      >
+                        <span>Get a Quote</span>
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        ))}
 
         {/* Quick Quote Banner at the bottom of Rentals page */}
         <div className="mt-16 sm:mt-20 border-t border-[#E8ECF1] pt-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
@@ -169,70 +215,6 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Category Quick Details Modal (Clean & Non-intrusive) */}
-      {selectedRental && (
-        <div 
-          className="fixed inset-0 z-50 bg-[#071326]/50 flex items-center justify-center p-4 backdrop-blur-xs"
-          onClick={() => setSelectedRental(null)}
-        >
-          <div 
-            className="bg-white rounded-xl border border-[#E8ECF1] max-w-lg w-full p-6 shadow-xl relative animate-in fade-in zoom-in-95 duration-150"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <button
-              onClick={() => setSelectedRental(null)}
-              className="absolute top-4 right-4 p-1.5 text-[#64748B] hover:text-[#071326] hover:bg-slate-100 rounded-lg transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <p className="text-xs font-bold uppercase tracking-wider text-[#087BF5] mb-1">
-              RENTAL CATEGORY
-            </p>
-            <h3 className="text-2xl font-black text-[#071326] mb-2">
-              {selectedRental.name}
-            </h3>
-            <p className="text-sm text-[#64748B] mb-5">
-              {selectedRental.shortDesc}
-            </p>
-
-            <div className="bg-[#F8FAFC] border border-[#E8ECF1] rounded-lg p-4 mb-6">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#071326] mb-2.5">
-                Popular Options Available:
-              </p>
-              <ul className="space-y-2">
-                {selectedRental.popularItems.map((item, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-sm text-[#334155]">
-                    <Check className="w-4 h-4 text-[#087BF5] shrink-0 stroke-[2.5]" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="flex items-center justify-end gap-3">
-              <button
-                onClick={() => setSelectedRental(null)}
-                className="px-4 py-2 border border-[#CBD5E1] text-[#475569] font-medium text-sm rounded-lg hover:bg-slate-50 transition-colors"
-              >
-                Close
-              </button>
-              <button
-                onClick={() => {
-                  const catName = selectedRental.name;
-                  setSelectedRental(null);
-                  onNavigate('estimator', { preselectedCategory: catName });
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="px-5 py-2 bg-[#087BF5] hover:bg-[#076edc] text-white font-bold text-sm rounded-lg flex items-center gap-2 transition-colors"
-              >
-                <span>Estimate & Book {selectedRental.name}</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
