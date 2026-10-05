@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Phone, MapPin, Clock, Calendar, ArrowRight, CheckCircle2 } from 'lucide-react';
-import { QuoteFormData } from '../types';
+import { Phone, MapPin, Clock, Calendar, ArrowRight, CheckCircle2, Calculator } from 'lucide-react';
+import { PageId, QuoteFormData } from '../types';
 
 interface AboutContactPageProps {
   initialCategory?: string;
+  onNavigate?: (page: PageId) => void;
 }
 
-export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCategory }) => {
+export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCategory, onNavigate }) => {
   const [formData, setFormData] = useState<QuoteFormData>({
     fullName: '',
     phone: '',
@@ -232,6 +233,36 @@ export const AboutContactPage: React.FC<AboutContactPageProps> = ({ initialCateg
 
               {/* Horizontal Divider */}
               <hr className="border-t border-[#E5E9EE] my-6" />
+
+              {/* Instant Online Estimate & Booking Quick Link */}
+              {onNavigate && (
+                <div className="mb-6 p-3.5 bg-blue-50/60 border border-blue-200/80 rounded-xl flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-lg bg-[#087BF5] text-white flex items-center justify-center shrink-0">
+                      <Calculator className="w-4 h-4" />
+                    </div>
+                    <div>
+                      <span className="text-xs font-bold text-[#071326] block leading-tight">
+                        Need Instant Pricing & Booking?
+                      </span>
+                      <span className="text-[11px] text-[#64748B]">
+                        Estimate all equipment and book your date in real time.
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      onNavigate('estimator');
+                      window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}
+                    className="shrink-0 text-xs font-bold text-[#087BF5] hover:text-[#076edc] hover:underline flex items-center gap-1"
+                  >
+                    <span>Instant Tool</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
 
               {/* CONTACT FORM */}
               {submitted ? (

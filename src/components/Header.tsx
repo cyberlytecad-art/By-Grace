@@ -14,6 +14,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
     { id: 'home', label: 'Home' },
     { id: 'rentals', label: 'Rentals' },
     { id: 'packages', label: 'Packages' },
+    { id: 'estimator', label: 'Book & Estimate' },
     { id: 'about-contact', label: 'About & Contact' },
   ];
 
@@ -70,21 +71,33 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
           })}
         </nav>
 
-        {/* Right: Phone button & Mobile menu trigger */}
-        <div className="flex items-center gap-3">
+        {/* Right: Phone button, Book & Quote blue button, and Mobile menu trigger */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          {/* Phone call button */}
           <a
             href="tel:8632804175"
-            className="bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-[8px] font-semibold text-xs sm:text-sm inline-flex items-center gap-2 shadow-sm transition-colors"
-            title="Call By Grace Party Rentals"
+            className="border border-[#CBD5E1] hover:border-[#087BF5] text-[#071326] hover:text-[#087BF5] bg-white px-2.5 sm:px-3.5 py-2 sm:py-2.5 rounded-[8px] font-semibold text-xs sm:text-sm inline-flex items-center gap-1.5 transition-colors shadow-2xs"
+            title="Call By Grace Party Rentals: 863-280-4175"
           >
-            <Phone className="w-4 h-4 text-white fill-white/20 stroke-[2.2]" />
-            <span className="tracking-wide">863-280-4175</span>
+            <Phone className="w-3.5 h-3.5 text-[#087BF5] stroke-[2.4]" />
+            <span className="hidden sm:inline tracking-wide">863-280-4175</span>
+            <span className="sm:hidden text-xs">Call</span>
           </a>
+
+          {/* Primary Blue CTA Button: Book & Quote */}
+          <button
+            onClick={() => handleNavClick('estimator')}
+            className="bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white px-3 sm:px-4 py-2 sm:py-2.5 rounded-[8px] font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm transition-all hover:translate-y-[-1px]"
+            title="Online Price Estimate & Booking"
+          >
+            <span>Book & Quote</span>
+            <span className="text-white/80 font-bold">&rarr;</span>
+          </button>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-[#071326] hover:text-[#087BF5] hover:bg-[#F1F5F9] rounded-lg transition-colors"
+            className="md:hidden p-2 text-[#071326] hover:text-[#087BF5] hover:bg-[#F1F5F9] rounded-lg transition-colors ml-1"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}

@@ -148,12 +148,12 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
             </button>
             <button
               onClick={() => {
-                onNavigate('about-contact');
+                onNavigate('estimator');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               className="px-5 py-2.5 bg-[#087BF5] hover:bg-[#076edc] text-white font-semibold text-sm rounded-[8px] transition-colors"
             >
-              Get a Quote →
+              Estimate Price & Book →
             </button>
           </div>
         </div>
@@ -211,12 +211,12 @@ export const RentalsPage: React.FC<RentalsPageProps> = ({ onNavigate }) => {
                 onClick={() => {
                   const catName = selectedRental.name;
                   setSelectedRental(null);
-                  onNavigate('about-contact', { preselectedCategory: catName });
+                  onNavigate('estimator', { preselectedCategory: catName });
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 className="px-5 py-2 bg-[#087BF5] hover:bg-[#076edc] text-white font-bold text-sm rounded-lg flex items-center gap-2 transition-colors"
               >
-                <span>Request Quote for {selectedRental.name}</span>
+                <span>Estimate & Book {selectedRental.name}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>

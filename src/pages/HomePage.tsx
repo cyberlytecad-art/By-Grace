@@ -129,7 +129,7 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
                 <button
                   onClick={() => {
-                    onNavigate('about-contact');
+                    onNavigate('estimator');
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className="w-[155px] sm:w-[165px] h-[50px] bg-white/10 hover:bg-white/20 active:bg-white/25 text-white font-bold text-sm rounded-[8px] border border-white/80 inline-flex items-center justify-center backdrop-blur-xs transition-all hover:translate-y-[-1px]"

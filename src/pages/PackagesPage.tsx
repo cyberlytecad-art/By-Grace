@@ -138,12 +138,12 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
                 {/* Action Button */}
                 <button
                   onClick={() => {
-                    onNavigate('about-contact', { preselectedCategory: pkg.name });
+                    onNavigate('estimator', { preselectedCategory: pkg.name });
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className="w-full py-3 bg-[#087BF5] hover:bg-[#076edc] active:bg-[#065ec0] text-white font-bold text-sm rounded-[8px] flex items-center justify-center gap-2 transition-colors"
                 >
-                  <span>Request This Package</span>
+                  <span>Book & Price This Package</span>
                   <ArrowRight className="w-4 h-4 stroke-[2.2]" />
                 </button>
               </div>
@@ -157,16 +157,16 @@ export const PackagesPage: React.FC<PackagesPageProps> = ({ onNavigate }) => {
             Need a custom package for your specific event size?
           </h4>
           <p className="text-sm text-[#64748B] mt-1.5 mb-5">
-            We customize packages with extra tables, chairs, generators, and multiple inflatables. Contact us with your guest count and date!
+            We customize packages with extra tables, chairs, generators, and multiple inflatables. Build and price your custom package in real time!
           </p>
           <button
             onClick={() => {
-              onNavigate('about-contact');
+              onNavigate('estimator');
               window.scrollTo({ top: 0, behavior: 'smooth' });
             }}
             className="px-6 py-2.5 bg-[#087BF5] hover:bg-[#076edc] text-white text-sm font-semibold rounded-[8px] transition-colors"
           >
-            Customize Your Package →
+            Customize Your Package & Estimate →
           </button>
         </div>
       </div>
